@@ -10,8 +10,7 @@ import { AppModule } from './app/app.module';
 import corsConfig from './app/configs/cors.config';
 import helmetConfig from './app/configs/helmet.config';
 import webAppConfig from './app/configs/web-app.config';
-
-export const BACKEND_API_PREFIX = 'api/v1';
+import { BACKEND_API_PREFIX } from './test';
 
 async function bootstrap() {
     let swaggerUrl: string | undefined;
