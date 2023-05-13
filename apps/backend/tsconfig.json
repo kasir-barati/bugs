@@ -1,0 +1,21 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2017",
+        "outDir": "./dist",
+        "baseUrl": "./",
+        "paths": {
+            "shared/*": ["./src/shared/*"]
+        },
+        "composite": true
+    },
+    "exclude": [
+        "node_modules",
+        "__tests__",
+        "test",
+        "jest.config.ts",
+        "dist",
+        "**/*spec.ts"
+    ]
+}

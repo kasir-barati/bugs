@@ -1,0 +1,49 @@
+{
+    "compilerOptions": {
+        "noUnusedLocals": true,
+        "allowJs": false,
+        "noUnusedParameters": true,
+        "noImplicitReturns": false,
+        "skipDefaultLibCheck": true,
+        "incremental": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "declaration": true,
+        "sourceMap": true,
+        "removeComments": true,
+        "esModuleInterop": true,
+        "noImplicitAny": false,
+        "strictNullChecks": true,
+        "strictBindCallApply": true,
+        "strictPropertyInitialization": false,
+        "alwaysStrict": true,
+        "noFallthroughCasesInSwitch": true,
+        "target": "ESNext",
+        "useDefineForClassFields": true,
+        "outDir": "./dist",
+        "baseUrl": "./",
+        "lib": ["DOM", "DOM.Iterable", "ESNext"],
+        "skipLibCheck": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react-jsx",
+        "paths": {
+            "components/*": ["./src/components/*"],
+            "pages/*": ["./src/pages/*"],
+            "backend/*": ["../backend/*"]
+        },
+        "rootDirs": ["./src", "../backend"]
+    },
+    "references": [
+        { "path": "./tsconfig.node.json" },
+        {
+            "path": "../backend"
+        }
+    ]
+}

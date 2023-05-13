@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "removeComments": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "sourceMap": true,
+        "incremental": true,
+        "skipLibCheck": true,
+        "strictNullChecks": false,
+        "noImplicitAny": false,
+        "noImplicitReturns": true,
+        "noUnusedParameters": true,
+        "strictBindCallApply": false,
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true,
+        "strict": true,
+        "allowJs": false,
+        "isolatedModules": true,
+        "esModuleInterop": true,
+        "resolveJsonModule": true
+    },
+    "exclude": ["node_modules"]
+}
