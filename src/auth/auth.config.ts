@@ -1,5 +1,5 @@
 import { registerAs } from '@nestjs/config';
-import { plainToClass, Type } from 'class-transformer';
+import { plainToClass, Transform, Type } from 'class-transformer';
 import { IsString, ValidateNested, validateSync } from 'class-validator';
 import { AuthConfig, KeycloakSecret } from './auth.type';
 
@@ -28,6 +28,7 @@ class KeycloakSecretValidator implements KeycloakSecret {
 
 class EnvironmentVariables {
   @ValidateNested()
+  @Transform(({ value }) => JSON.parse(value))
   @Type(() => KeycloakSecretValidator)
   KEYCLOAK_SECRET: KeycloakSecret;
 }
@@ -38,7 +39,7 @@ function validate(config: Record<string, unknown>): EnvironmentVariables {
   });
   const validatedConfigsErrors = validateSync(validatedConfigs, {
     skipMissingProperties: false,
-    forbidUnknownValues: true,
+    forbidUnknownValues: false,
     forbidNonWhitelisted: true,
   });
 
