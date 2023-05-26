@@ -1,3 +1,10 @@
-# Bugs repo
+# How to start the project?
 
-Checkout to different branch
+```cmd
+pnpm i --frozen-lockfile
+pnpm dev
+```
+
+# The picture
+
+![Bug picture](./src/assets/Untitled.png)
