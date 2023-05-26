@@ -1,3 +1,14 @@
+# Status:
+
+**Resolved**
+
+It is a normal behavior. Just like any data fetching, when the component first loads it won't have the data, but then when it comes in it will re-render with the new data.
+
+```ts
+const { isAuthenticated, isLoading } = useAuth0();
+// Use isLoading in conjunction to isAuthenticated
+```
+
 # How to start the project?
 
 ```cmd
