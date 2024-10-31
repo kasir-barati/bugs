@@ -1,0 +1,72 @@
+/* Here I had to add an extra div to have my border. That overflow in billboard class was interfering with it! */
+.billboard-border {
+  position: relative;
+  border-radius: var(--sidebar-border-radius);
+
+  &::before {
+    content: '';
+    display: inline-block;
+    inline-size: calc(100% + 2px);
+    block-size: 100%;
+    background: linear-gradient(to bottom, transparent, red);
+    border-radius: var(--sidebar-border-radius);
+    position: absolute;
+    bottom: -1px;
+    left: -1px;
+    z-index: -1;
+  }
+}
+.billboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sidebar-gap);
+  background-color: var(--sidebar-bg-color);
+  border-radius: var(--sidebar-border-radius);
+  padding-block: var(--sidebar-padding-block);
+  padding-inline: var(--sidebar-padding-inline);
+  max-block-size: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #ff1111aa transparent;
+
+  .billboard__header {
+    a {
+      color: lightsteelblue;
+    }
+  }
+  .billboard__banner {
+    order: -1;
+    border-radius: var(--sidebar-border-radius);
+  }
+  .billboard__advertiser-name {
+    order: -2;
+    text-decoration: none;
+    color: lightsteelblue;
+    inline-size: min-content;
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+
+    img {
+      inline-size: 50%;
+    }
+  }
+  .billboard__description {
+    font-size: 1.1rem;
+  }
+  .billboard__cta {
+    border-inline: 1px solid violet;
+    border-block: 1px solid violet;
+    border-radius: var(--sidebar-border-radius);
+    text-align: center;
+    color: lightsteelblue;
+    text-decoration: none;
+    padding-block: 0.5rem;
+
+    &:hover {
+      background-color: violet;
+      color: white;
+    }
+  }
+}

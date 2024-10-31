@@ -1,0 +1,25 @@
+/* Your styles goes here. */
+section.btn {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: space-around;
+
+  button {
+    inline-size: 100%;
+    padding-block: 1rem;
+    font-size: 2rem;
+    border-radius: 1rem;
+    border-inline: 1px dashed white;
+    border-block: 1px dashed white;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.4s ease-in-out 0s;
+    color: currentColor;
+
+    &:hover {
+      box-shadow: 5px 5px 10px yellow, -5px -5px 10px purple,
+        -5px 5px 10px green, 5px -5px 10px orange;
+    }
+  }
+}

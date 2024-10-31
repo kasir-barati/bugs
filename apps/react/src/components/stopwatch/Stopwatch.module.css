@@ -1,0 +1,71 @@
+.stopwatch {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  --gap-size: 1rem;
+  --cols-number: 3;
+  gap: var(--gap-size);
+
+  > h2 {
+    flex: 0 0 100%;
+    font-size: 2rem;
+    padding-block-end: 1rem;
+    border-block-end: 2px dashed turquoise;
+  }
+  > p {
+    font-size: 1.25rem;
+    --inline-size: 60%;
+    flex: 1 1
+      calc(
+        var(--inline-size) -
+          (var(--gap-size) / (var(--cols-number) / 2))
+      );
+
+    @media screen and (width < 700px) {
+      flex: 1 1 100%;
+    }
+  }
+  > button {
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 1.25rem;
+    color: currentColor;
+    border-block: 2px dashed turquoise;
+    border-inline: 2px dashed turquoise;
+    padding-block: 1rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    transition: all 1s ease-in-out 0s;
+    --inline-size: 20%;
+    flex: 1 1
+      calc(
+        var(--inline-size) -
+          (var(--gap-size) / (var(--cols-number) / 2))
+      );
+
+    @media screen and (width < 700px) {
+      flex: 1 1
+        calc(50% - (var(--gap-size) / (var(--cols-number) / 2)));
+    }
+    &:not(&.reset):hover {
+      color: yellowgreen;
+      border-color: yellowgreen;
+    }
+    &:not(&.reset).stop:hover {
+      color: tomato;
+      border-color: tomato;
+    }
+    &.reset:not(&[disabled]):hover {
+      color: red;
+      border-color: red;
+    }
+    &:focus-visible {
+      outline-style: none;
+    }
+    &:disabled {
+      border-color: gray;
+      cursor: auto;
+    }
+  }
+}

@@ -1,0 +1,38 @@
+.contacts {
+  grid-row: 1 / -1;
+
+  > legend {
+    font-size: 1.5rem;
+    margin-block-end: 1rem;
+  }
+
+  ul {
+    list-style-type: none;
+    display: grid;
+    gap: 0.5rem;
+
+    li {
+      font-size: 1.25rem;
+      border-block: 1px solid black;
+      border-inline: 1px solid black;
+      border-radius: var(--sm-border-radius);
+      transition: all 0.5s ease-out 0s;
+
+      &:hover {
+        box-shadow: 2px 2px 0.5rem black;
+      }
+      input[type='radio'] {
+        display: none;
+      }
+      label {
+        cursor: pointer;
+        padding-block: 0.5rem;
+        padding-inline: 0.5rem;
+        inline-size: 100%;
+        display: block;
+        text-align: center;
+        text-transform: capitalize;
+      }
+    }
+  }
+}

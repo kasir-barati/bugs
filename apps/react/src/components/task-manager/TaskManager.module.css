@@ -1,0 +1,9 @@
+.task-manager {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  > h2:first-child {
+    font-size: 2rem;
+  }
+}

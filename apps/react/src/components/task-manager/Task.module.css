@@ -1,0 +1,74 @@
+.task {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  border-block-end: 1px solid gray;
+  padding-block: 0.25rem;
+
+  @media screen and (width > 750px) {
+    font-size: 1.25rem;
+  }
+  @media screen and (width < 820px) {
+    grid-template-columns: auto 8fr 1fr 1fr;
+  }
+  > input[type='checkbox'] {
+    accent-color: green;
+    cursor: pointer;
+    flex: 1 1 auto;
+  }
+  > input[type='text'] {
+    padding-block: 0.5rem;
+    padding-inline: 0.25rem;
+    border-radius: 0.25rem;
+    color: currentColor;
+    background-color: transparent;
+    border-block: 1px solid white;
+    border-inline: 1px solid white;
+    flex: 1 1 70%;
+
+    @media screen and (width > 750px) {
+      font-size: 1rem;
+    }
+    @media screen and (width < 650px) {
+      flex: 1 1 90%;
+    }
+  }
+  > label {
+    flex: 1 1 70%;
+    cursor: pointer;
+    inline-size: fit-content;
+    @media screen and (width < 650px) {
+      flex: 1 1 90%;
+    }
+  }
+  > button {
+    flex: 1 1 10%;
+    padding-block: 0.5rem;
+    padding-inline: 0.25rem;
+    border-radius: 0.25rem;
+    block-size: fit-content;
+    background-color: transparent;
+    border-block: 1px solid orangered;
+    border-inline: 1px solid orangered;
+    color: currentColor;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out 0s;
+
+    @media screen and (width > 750px) {
+      font-size: 1rem;
+    }
+    @media screen and (width < 650px) {
+      flex: 1 1 auto;
+    }
+    &.delete-task-btn:hover {
+      color: red;
+    }
+    &.save-task-btn:hover {
+      color: green;
+    }
+    &.update-task-btn:hover {
+      color: orange;
+    }
+  }
+}

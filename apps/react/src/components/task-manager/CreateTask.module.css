@@ -1,0 +1,35 @@
+.create-task {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 0.5rem;
+  --border-radius-size: 0.5rem;
+  color: white;
+
+  > input[type='text'] {
+    color: currentColor;
+    inline-size: 100%;
+    padding-block: 0.5rem;
+    padding-inline: 0.5rem;
+    border-radius: var(--border-radius-size);
+    background-color: transparent;
+    border-inline: 1px solid orangered;
+    border-block: 1px solid orangered;
+  }
+  > button {
+    color: currentColor;
+    background-color: transparent;
+    border-radius: var(--border-radius-size);
+    border-inline: 1px solid orangered;
+    border-block: 1px solid orangered;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out 0s;
+
+    @media screen and (width > 750px) {
+      font-size: 1rem;
+    }
+    &:hover {
+      box-shadow: 3px 3px 0.5rem black;
+    }
+  }
+}

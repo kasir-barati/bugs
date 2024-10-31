@@ -1,0 +1,58 @@
+@import url(./variables.css) layer(variables);
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sidebar-gap);
+  position: relative;
+  background-color: var(--sidebar-bg-color);
+  border-radius: var(--sidebar-border-radius);
+  padding-block-end: var(--sidebar-padding-block);
+
+  &::before {
+    content: '';
+    display: inline-block;
+    inline-size: calc(100% + 2px);
+    block-size: 100%;
+    background: linear-gradient(to bottom, transparent, red);
+    border-radius: var(--sidebar-border-radius);
+    position: absolute;
+    bottom: -1px;
+    left: -1px;
+    z-index: -1;
+  }
+  > *:not(.user-info__banner, .user-info__avatar) {
+    padding-inline: var(--sidebar-padding-inline);
+  }
+  .user-info__banner {
+    border-radius: var(--sidebar-border-radius)
+      var(--sidebar-border-radius) 0 0;
+    order: -2;
+    block-size: 40px;
+  }
+  .user-info__name {
+    padding-inline-start: 4.5rem;
+  }
+  .user-info__avatar {
+    order: -1;
+    border-radius: 100%;
+    inline-size: 50px;
+    position: absolute;
+    inset-block-start: calc(30px - 0.75rem);
+    inset-inline-start: 1rem;
+  }
+  .user-info__bio {
+    text-align: justify;
+    color: gray;
+  }
+  .user-info__meta {
+    dt {
+      text-transform: uppercase;
+      color: gray;
+
+      & ~ & {
+        margin-block-start: 0.75rem;
+      }
+    }
+  }
+}

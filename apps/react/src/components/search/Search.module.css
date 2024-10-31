@@ -1,0 +1,70 @@
+.search {
+  --border-radius: 0.5rem;
+  --field-padding-inline: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+
+  .search__header {
+    font-size: 2.5rem;
+  }
+  .ltr-linear-border {
+    position: relative;
+    display: inline-block;
+    block-size: 100%;
+    inline-size: 100%;
+
+    &::before {
+      position: absolute;
+      border-radius: var(--border-radius);
+      content: '';
+      display: inline-block;
+      block-size: calc(100% + 4px);
+      inline-size: calc(100% + 4px);
+      background: linear-gradient(to right, blue, transparent, red);
+      inset-block-end: -2px;
+      inset-inline-start: -2px;
+      z-index: -1;
+    }
+  }
+  .field {
+    padding-block: 0.5rem;
+    padding-inline: var(--field-padding-inline);
+    border-radius: var(--border-radius);
+    inline-size: 100%;
+    block-size: 100%;
+    /* transition: all 2s linear 0s; */
+
+    &:focus-visible {
+      outline-style: none;
+    }
+  }
+  .filtered-cities {
+    margin-block-start: -6px;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    color: black;
+    overflow-y: auto;
+    max-block-size: 200px;
+    scrollbar-color: red transparent;
+    scrollbar-width: thin;
+    display: block;
+    position: absolute;
+    inline-size: 100%;
+    background-color: white;
+
+    option {
+      padding-inline: var(--field-padding-inline);
+      padding-block: 0.5rem;
+      color: currentColor;
+      cursor: pointer;
+      display: block;
+      transition: all 0.5s linear 0s;
+
+      &:hover {
+        background-color: gray;
+        color: white;
+      }
+    }
+  }
+}

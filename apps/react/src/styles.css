@@ -1,0 +1,41 @@
+/* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0;
+  padding: 0;
+  border-inline: 0;
+  border-block: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --sm-border-radius: 0.5rem;
+  --md-border-radius: 1rem;
+  --text-color: white;
+  --bg-color: #1f1f1f;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  padding-block: 1rem;
+  padding-inline: 1rem;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+
+  @media screen and (width > 700px) {
+    padding-inline: 4rem;
+  }
+  @media screen and (width > 1000px) {
+    padding-inline: 7rem;
+  }
+  #root {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    inline-size: 100%;
+  }
+}

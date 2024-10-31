@@ -1,0 +1,17 @@
+.latest-post {
+  text-decoration: none;
+  color: whitesmoke;
+  border-block-end: 1px solid black;
+  padding-block-end: var(--sidebar-gap);
+
+  &:last-child {
+    border-block-end-width: 0;
+    padding-block-end: 0;
+  }
+  &:hover .latest-post__title {
+    color: lightsteelblue;
+  }
+  .latest-post__title {
+    transition: all 0.5s linear 0s;
+  }
+}

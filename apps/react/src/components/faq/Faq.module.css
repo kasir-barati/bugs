@@ -1,0 +1,44 @@
+.faq {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+
+  > h2:first-of-type {
+    font-size: 2rem;
+    margin-block-end: 1rem;
+  }
+  .faq__q-and-a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .faq__q-and-a__header {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      transition: all 0.5s linear;
+
+      &::after {
+        color: black;
+        content: '\2B54';
+        transition: all 0.5s linear;
+        text-shadow: 1px 1px 0.5rem white;
+      }
+      &:hover {
+        text-shadow: 1px 1px 0.5rem blue;
+
+        &::after {
+          text-shadow: 1px 1px 0.5rem blue;
+        }
+      }
+      &.faq__q-and-a__open {
+        padding-block-end: 0.5rem;
+        border-block-end: 1px solid black;
+
+        &::after {
+          content: '\2B53';
+        }
+      }
+    }
+  }
+}

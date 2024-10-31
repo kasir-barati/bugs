@@ -1,0 +1,35 @@
+.chat-box {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  textarea {
+    border-radius: var(--sm-border-radius);
+    padding-inline: 0.5rem;
+    padding-block: 0.5rem;
+    font-size: 1.25rem;
+    font-family: monospace;
+    min-block-size: 300px;
+    background-color: transparent;
+    border-inline: 1px solid white;
+    border-block: 1px solid white;
+    resize: none;
+    color: white;
+
+    &:focus-visible {
+      outline-style: none;
+    }
+  }
+  button {
+    padding-block: 0.5rem;
+    background-color: orangered;
+    cursor: pointer;
+    border-radius: var(--sm-border-radius);
+    transition: all 0.5s ease-out 0s;
+    font-weight: bold;
+
+    &:hover {
+      box-shadow: 2px 2px 0.5rem black;
+    }
+  }
+}

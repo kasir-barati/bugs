@@ -1,0 +1,34 @@
+.latest-posts {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sidebar-gap);
+  background-color: var(--sidebar-bg-color);
+  border-radius: var(--sidebar-border-radius);
+  padding-block: var(--sidebar-padding-block);
+
+  &::before {
+    content: '';
+    display: inline-block;
+    inline-size: calc(100% + 2px);
+    block-size: 100%;
+    background: linear-gradient(to bottom, transparent, red);
+    border-radius: var(--sidebar-border-radius);
+    position: absolute;
+    bottom: -1px;
+    left: -1px;
+    z-index: -1;
+  }
+  > * {
+    padding-inline: var(--sidebar-padding-inline);
+  }
+  .latest-posts-header {
+    border-block-end: 1px solid black;
+    padding-block-end: var(--sidebar-gap);
+
+    a {
+      text-decoration: none;
+      color: #818cf8;
+    }
+  }
+}
