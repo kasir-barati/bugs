@@ -10,3 +10,8 @@
 With the warnings that we get from Vite about removing support of CommonJS in V6 and also this fragile conf which is not even practical (who's gonna install all those 3rd party libs to just get ESM + NestJS + Nx working?) I am not gonna stop and see how Nx gonna work. I mean I do not see why they have added webpack to NestJS. Does not make sense to me.
 
 We should just ditch the whole webpack in NestJS, but I know that there is a reason for having webpack in NestJS.
+
+## How to run it
+
+1. `pnpm i`.
+2. `nx serve nest`.
