@@ -1,3 +1,12 @@
+# How to start:
+
+```shell
+pnpm i --frozen-lockfile
+pnpm run serve
+```
+
+## GraphQL Queries
+
 ```graphql
 query FindAllAlerts {
   findAllAlerts {
@@ -26,7 +35,7 @@ mutation CreateAlertType() {
 mutation() {
     createAlert(createAlertInput: {
     "createAlertInput": {
-      "alertTypeId": "9cbf441c-a024-42c9-b8e5-7396a8982fd5",
+      "alertTypeId": "uuid",
       "description": "ssss",
       "title": "rrrr"
     }
