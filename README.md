@@ -1,99 +1,51 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Run The App
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+1. `pnpm install --frozen-lockfile`.
+2. `pnpm test:e2e`.
+3. See the error message in your terminal:
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
-
-```bash
-$ pnpm install
-```
-
-## Compile and run the project
-
-```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
-```
-
-## Run tests
-
-```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ pnpm install -g mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+   ```bash
+      FAIL  test/cart.e2e-spec.ts
+     AppController (e2e)
+       ✕ / (GET) (1333 ms)
+ 
+     ● AppController (e2e) › / (GET)
+ 
+       Worker requires a connection
+ 
+         20 |
+         21 |     app = moduleFixture.createNestApplication();
+       > 22 |     await app.init();
+           |     ^
+         23 |   });
+         24 |
+         25 |   it('/ (GET)', () => {
+ 
+         at new Worker (../node_modules/.pnpm/bullmq@5.35.1/node_modules/bullmq/src/classes/worker.ts:220:13)
+         at BullExplorer.handleProcessor (../node_modules/.pnpm/@nestjs+bullmq@11.0.1_@nestjs+common@11.0.5_reflect-metadata@0.2.2_rxjs@7.8.1__@nestjs+core@11.0.5_bullmq@5.35.1/node_modules/@nestjs/bullmq/dist/bull.explorer.js:131:24)
+         at ../node_modules/.pnpm/@nestjs+bullmq@11.0.1_@nestjs+common@11.0.5_reflect-metadata@0.2.2_rxjs@7.8.1__@nestjs+core@11.0.5_bullmq@5.35.1/node_modules/@nestjs/bullmq/dist/bull.explorer.js:70:22
+             at Array.forEach (<anonymous>)
+         at BullExplorer.registerWorkers (../node_modules/.pnpm/@nestjs+bullmq@11.0.1_@nestjs+common@11.0.5_reflect-metadata@0.2.2_rxjs@7.8.1__@nestjs+core@11.0.5_bullmq@5.35.1/node_modules/@nestjs/bullmq/dist/bull.explorer.js:56:20)
+         at BullExplorer.register (../node_modules/.pnpm/@nestjs+bullmq@11.0.1_@nestjs+common@11.0.5_reflect-metadata@0.2.2_rxjs@7.8.1__@nestjs+core@11.0.5_bullmq@5.35.1/node_modules/@nestjs/bullmq/dist/bull.explorer.js:34:14)
+         at BullRegistrar.register (../node_modules/.pnpm/@nestjs+bullmq@11.0.1_@nestjs+common@11.0.5_reflect-metadata@0.2.2_rxjs@7.8.1__@nestjs+core@11.0.5_bullmq@5.35.1/node_modules/@nestjs/bullmq/dist/bull.registrar.js:22:34)
+         at BullRegistrar.onModuleInit (../node_modules/.pnpm/@nestjs+bullmq@11.0.1_@nestjs+common@11.0.5_reflect-metadata@0.2.2_rxjs@7.8.1__@nestjs+core@11.0.5_bullmq@5.35.1/node_modules/@nestjs/bullmq/dist/bull.registrar.js:19:14)
+         at MapIterator.iteratee (../node_modules/.pnpm/@nestjs+core@11.0.5_@nestjs+common@11.0.5_reflect-metadata@0.2.2_rxjs@7.8.1__@nestjs+platform_r7tuouw5feiz2yjyaumzh5nx34/node_modules/@nestjs/core/hooks/on-module-init.hook.js:22:43)
+         at MapIterator.next (../node_modules/.pnpm/iterare@1.2.1/node_modules/iterare/src/map.ts:9:39)
+         at IteratorWithOperators.next (../node_modules/.pnpm/iterare@1.2.1/node_modules/iterare/src/iterate.ts:19:28)
+             at Function.from (<anonymous>)
+         at IteratorWithOperators.toArray (../node_modules/.pnpm/iterare@1.2.1/node_modules/iterare/src/iterate.ts:227:22)
+         at callOperator (../node_modules/.pnpm/@nestjs+core@11.0.5_@nestjs+common@11.0.5_reflect-metadata@0.2.2_rxjs@7.8.1__@nestjs+platform_r7tuouw5feiz2yjyaumzh5nx34/node_modules/@nestjs/core/hooks/on-module-init.hook.js:23:10)
+         at callModuleInitHook (../node_modules/.pnpm/@nestjs+core@11.0.5_@nestjs+common@11.0.5_reflect-metadata@0.2.2_rxjs@7.8.1__@nestjs+platform_r7tuouw5feiz2yjyaumzh5nx34/node_modules/@nestjs/core/hooks/on-module-init.hook.js:43:23)
+         at Proxy.callInitHook (../node_modules/.pnpm/@nestjs+core@11.0.5_@nestjs+common@11.0.5_reflect-metadata@0.2.2_rxjs@7.8.1__@nestjs+platform_r7tuouw5feiz2yjyaumzh5nx34/node_modules/@nestjs/core/nest-application-context.js:242:50)
+         at Proxy.init (../node_modules/.pnpm/@nestjs+core@11.0.5_@nestjs+common@11.0.5_reflect-metadata@0.2.2_rxjs@7.8.1__@nestjs+platform_r7tuouw5feiz2yjyaumzh5nx34/node_modules/@nestjs/core/nest-application.js:100:9)
+         at Object.<anonymous> (cart.e2e-spec.ts:22:5)
+ 
+   Test Suites: 1 failed, 1 total
+   Tests:       1 failed, 1 total
+   Snapshots:   0 total
+   Time:        2.979 s, estimated 3 s
+   Ran all test suites.
+   Jest did not exit one second after the test run has completed.
+ 
+   'This usually means that there are asynchronous operations that weren't stopped in your tests. Consider running Jest with `--detectOpenHandles` to troubleshoot this issue.
+   ```
