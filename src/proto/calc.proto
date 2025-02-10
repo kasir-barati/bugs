@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package calc;
+
+service CalcService {
+  rpc Sum (stream SumReq) returns (stream SumRes) {}
+}
+
+message SumReq {
+  float number = 1;
+}
+
+message SumRes {
+  float result = 1;
+}

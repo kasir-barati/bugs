@@ -2,8 +2,9 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BullModule } from '@nestjs/bullmq';
-import { UserModule } from './user/user.module';
+// import { UserModule } from './user/user.module';
 import { CartModule } from './cart/cart.module';
+import { CalcModule } from './calc/calc.module';
 
 @Module({
   imports: [
@@ -13,8 +14,9 @@ import { CartModule } from './cart/cart.module';
         port: 6379,
       },
     }),
-    UserModule,
+    // UserModule,
     CartModule,
+    CalcModule,
   ],
   controllers: [AppController],
   providers: [AppService],

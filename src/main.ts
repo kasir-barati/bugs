@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 import { HttpExceptionFilter } from './http.exception';
+import { CALC_PACKAGE_NAME } from './proto/interfaces/calc.interface';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,8 +12,10 @@ async function bootstrap() {
     transport: Transport.GRPC,
     options: {
       url: `0.0.0.0:3000`,
-      package: 'hero',
-      protoPath: [join(__dirname, 'proto')],
+      // package: 'hero',
+      // protoPath: [join(__dirname, 'proto', 'hero.proto')],
+      package: CALC_PACKAGE_NAME,
+      protoPath: [join(__dirname, 'proto', 'calc.proto')],
       loader: {
         includeDirs: [join(__dirname, 'proto')],
       },
