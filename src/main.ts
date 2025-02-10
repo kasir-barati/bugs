@@ -1,8 +1,33 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { join } from 'path';
+import { HttpExceptionFilter } from './http.exception';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.GRPC,
+    options: {
+      url: `0.0.0.0:3000`,
+      package: 'hero',
+      protoPath: [join(__dirname, 'proto')],
+      loader: {
+        includeDirs: [join(__dirname, 'proto')],
+      },
+      keepalive: {
+        keepaliveTimeMs: 120000,
+        keepaliveTimeoutMs: 20000,
+        keepalivePermitWithoutCalls: 1,
+      },
+    },
+  });
+
+  app.useGlobalFilters(new HttpExceptionFilter());
+
+  await app.startAllMicroservices();
   await app.listen(process.env.PORT ?? 3000);
 }
+
 bootstrap();
