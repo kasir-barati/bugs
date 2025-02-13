@@ -14,7 +14,8 @@
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:integration": "jest --config ./integration-tests/jest-integration.json --detectOpenHandles",
+    "test:container": "jest --config ./test/jest-e2e.json",
     "grpc:gen": "npx protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_opt=fileSuffix=.interface --ts_proto_opt=nestJs=true --ts_proto_opt=addNestjsRestParameter=true --ts_proto_out=./src/proto/interfaces -I ./src/proto/ ./src/proto/*.proto"
   },
   "dependencies": {
