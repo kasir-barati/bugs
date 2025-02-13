@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CalcController } from './calc.controller';
+import { CalcGrpcController } from './calc.grpc-controller';
 
 describe('CalcController', () => {
-  let controller: CalcController;
+  let controller: CalcGrpcController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [CalcController],
+      controllers: [CalcGrpcController],
     }).compile();
 
-    controller = module.get<CalcController>(CalcController);
+    controller = module.get<CalcGrpcController>(CalcGrpcController);
   });
 
   it('should be defined', () => {

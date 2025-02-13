@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
-import { CalcController } from './calc.controller';
+import { CalcGrpcController } from './calc.grpc-controller';
+import { CalcService } from './calc.service';
 
 @Module({
-  controllers: [CalcController],
+  controllers: [CalcGrpcController],
+  providers: [CalcService],
 })
 export class CalcModule {}

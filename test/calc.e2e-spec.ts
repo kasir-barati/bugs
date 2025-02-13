@@ -8,6 +8,7 @@ import {
   ChannelCredentials,
   credentials,
   loadPackageDefinition,
+  Metadata,
 } from '@grpc/grpc-js';
 import {
   CALC_PACKAGE_NAME,
@@ -26,7 +27,7 @@ interface CalcService {
 
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
-  let client: { sum: () => ClientDuplexStreamImpl<SumReq, SumRes> };
+  let client: { sum: (...args: any) => ClientDuplexStreamImpl<SumReq, SumRes> };
   const calcProtobufFilePath = join(
     __dirname,
     '..',
@@ -67,8 +68,10 @@ describe('AppController (e2e)', () => {
   });
 
   it('test class-validator', (done) => {
+    const metadata = new Metadata();
+
     // Arrange
-    const callHandler = client.sum();
+    const callHandler = client.sum(metadata);
     callHandler.on('error', (err) => {
       console.log("callHandler.on('error', (err) => {...})");
       console.log(err);
