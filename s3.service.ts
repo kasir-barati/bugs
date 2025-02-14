@@ -33,7 +33,7 @@ export class S3Service {
       Bucket: bucket,
       Key: key,
       ChecksumAlgorithm: checksumAlgorithm,
-      ChecksumType: "FULL_OBJECT",
+      // ChecksumType: "FULL_OBJECT",
       ContentType: mimetype,
       ContentDisposition: `attachment; filename="${originalname}"`,
     });
@@ -102,10 +102,10 @@ export class S3Service {
       Bucket: bucket,
       Key: key,
       UploadId: uploadId,
-      ChecksumType: "FULL_OBJECT",
-      ...(algorithm === "CRC32" && { ChecksumCRC32: checksum }),
-      ...(algorithm === "CRC32C" && { ChecksumCRC32C: checksum }),
-      ...(algorithm === "CRC64NVME" && { ChecksumCRC64NVME: checksum }),
+      // ChecksumType: "FULL_OBJECT",
+      // ...(algorithm === "CRC32" && { ChecksumCRC32: checksum }),
+      // ...(algorithm === "CRC32C" && { ChecksumCRC32C: checksum }),
+      // ...(algorithm === "CRC64NVME" && { ChecksumCRC64NVME: checksum }),
       MultipartUpload: { Parts },
     });
     const response = await this.s3Client.send(command);

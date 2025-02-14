@@ -1,3 +1,11 @@
+# How it works:
+
+1. Change the `fileName` to point to an absolute file.
+   - It should be bigger than 5MB.
+2. `docker compose up -d`
+3. Create a bucket named "test".
+4. `pnpm start`.
+
 # Steps to reproduce
 
 ```bash

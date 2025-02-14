@@ -148,8 +148,11 @@ export class FileUploaderService {
 
 (async () => {
   const fileUploaderService = new FileUploaderService();
-  const fileName = "pnpm-lock.yaml";
-  const stream = createReadStream(fileName);
+  const fileName = "upload-me.mp4";
+  const bufferSizeInByte = 4086 * 2048; // ~8 MB
+  const stream = createReadStream(fileName, {
+    highWaterMark: bufferSizeInByte,
+  });
   const fileContent = await readFile(fileName, {
     encoding: "binary",
   });
