@@ -59,8 +59,11 @@ export class FileUploaderService {
     if (!this.algorithm) {
       throw "algorithm is not set";
     }
+    if (!this.checksum) {
+      throw "checksum is not set";
+    }
 
-    const etag = await s3StorageService.uploadPart(
+    const result = await s3StorageService.uploadPart(
       bucket,
       key,
       this.uploadId,
@@ -69,13 +72,30 @@ export class FileUploaderService {
       data
     );
 
-    console.debug({ partNumber, etag });
+    console.debug(this.parts);
     console.debug(
       `Received ${this.receivedSize} bytes of ${this.totalSize} bytes`
     );
 
+    if (!result.ETag) {
+      throw "ETag is missing";
+    }
+
+    const partChecksum = {
+      ...(result.ChecksumCRC32 && {
+        ChecksumCRC32: result.ChecksumCRC32,
+      }),
+      ...(result.ChecksumCRC32C && {
+        ChecksumCRC32C: result.ChecksumCRC32C,
+      }),
+    };
+
     this.receivedSize += data.length;
-    this.parts.push({ partNumber, etag });
+    this.parts.push({
+      partNumber,
+      etag: result.ETag?.replaceAll('"', ""),
+      ...partChecksum,
+    });
   }
 
   async isFileCorrupted(): Promise<boolean> {
@@ -93,8 +113,14 @@ export class FileUploaderService {
    * The ETag of the object part or maybe it will be undefined if AWS is still processing the object.
    */
   async completeMultipartUpload(): Promise<string | undefined> {
-    if (!this.uploadId) {
-      throw "uploadId is not set";
+    if (!this.uploadId || !this.algorithm || !this.checksum) {
+      const missingProperty = !this.uploadId
+        ? "uploadId"
+        : !this.checksum
+        ? "checksum"
+        : "algorithm";
+
+      throw missingProperty + "is not set";
     }
 
     if (this.receivedSize !== this.totalSize) {
@@ -105,6 +131,8 @@ export class FileUploaderService {
       bucket,
       key,
       this.uploadId,
+      this.checksum,
+      this.algorithm,
       this.parts
     );
   }
@@ -125,13 +153,13 @@ export class FileUploaderService {
   const fileContent = await readFile(fileName, {
     encoding: "binary",
   });
-  const checksum = generateChecksum(fileContent, ChecksumAlgorithm.SHA256);
+  const checksum = generateChecksum(fileContent, ChecksumAlgorithm.CRC32);
   const { size: totalFileSize } = await stat(fileName);
 
   console.log("Checksum: ", checksum);
 
   await fileUploaderService.createMultipartUpload(
-    ChecksumAlgorithm.SHA256,
+    ChecksumAlgorithm.CRC32,
     checksum,
     fileName,
     totalFileSize

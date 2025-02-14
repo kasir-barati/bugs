@@ -33,6 +33,7 @@ export class S3Service {
       Bucket: bucket,
       Key: key,
       ChecksumAlgorithm: checksumAlgorithm,
+      ChecksumType: "FULL_OBJECT",
       ContentType: mimetype,
       ContentDisposition: `attachment; filename="${originalname}"`,
     });
@@ -53,7 +54,7 @@ export class S3Service {
     algorithm: ChecksumAlgorithm,
     chunkPart: number,
     data: Uint8Array
-  ): Promise<string> {
+  ) {
     const command = new UploadPartCommand({
       Bucket: bucket,
       Key: key,
@@ -64,11 +65,7 @@ export class S3Service {
     });
     const response = await this.s3Client.send(command);
 
-    if (!response.ETag) {
-      throw "ETag is missing";
-    }
-
-    return response.ETag.replaceAll('"', "");
+    return response;
   }
 
   async getEtag(bucket: string, key: string): Promise<string> {
@@ -90,21 +87,27 @@ export class S3Service {
     bucket: string,
     key: string,
     uploadId: string,
+    checksum: string,
+    algorithm: ChecksumAlgorithm,
     parts: { etag: string; partNumber: number }[]
   ): Promise<string | undefined> {
     const Parts: CompletedPart[] = parts
       .sort((a, b) => a.partNumber - b.partNumber)
-      .map((part) => ({ ETag: part.etag, PartNumber: part.partNumber }));
+      .map(({ etag, partNumber, ...rest }) => ({
+        ...rest,
+        ETag: etag,
+        PartNumber: partNumber,
+      }));
     const command = new CompleteMultipartUploadCommand({
       Bucket: bucket,
       Key: key,
       UploadId: uploadId,
+      ChecksumType: "FULL_OBJECT",
+      ...(algorithm === "CRC32" && { ChecksumCRC32: checksum }),
+      ...(algorithm === "CRC32C" && { ChecksumCRC32C: checksum }),
+      ...(algorithm === "CRC64NVME" && { ChecksumCRC64NVME: checksum }),
       MultipartUpload: { Parts },
     });
-
-    console.debug({ Parts });
-    console.debug(command);
-
     const response = await this.s3Client.send(command);
 
     if (!response.ETag) {
