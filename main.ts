@@ -2,6 +2,7 @@ import { ChecksumAlgorithm, S3Client } from "@aws-sdk/client-s3";
 import { randomUUID } from "crypto";
 import { createReadStream } from "fs";
 import { readFile, stat } from "fs/promises";
+import mime from "mime-types";
 
 import { S3Service } from "./s3.service";
 import { generateChecksum } from "./generate-checksum";
@@ -30,12 +31,17 @@ export class FileUploaderService {
     fileName: string,
     totalFileSize: number
   ): Promise<void> {
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+    const mimetype = mime.lookup(fileName);
+
+    if (!mimetype) {
+      throw "Invalid mimetype";
+    }
+
     const uploadId = await s3StorageService.createMultipartUpload(
       bucket,
       key,
       algorithm,
-      "application/json",
+      mimetype,
       fileName
     );
 

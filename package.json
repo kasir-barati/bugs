@@ -11,9 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.744.0"
+    "@aws-sdk/client-s3": "^3.744.0",
+    "mime-types": "^2.1.35"
   },
   "devDependencies": {
+    "@types/mime-types": "^2.1.4",
     "@types/node": "^22.13.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
