@@ -1,3 +1,11 @@
+# Stackoverflow Q&A
+
+https://stackoverflow.com/questions/79440191/invalid-checksum-when-using-multipart-upload-with-full-object-checksum-in-nodejs?noredirect=1#comment140099479_79440191
+
+## Results
+
+- Checksum should be a Base64 encoded, 32-bit CRC32 checksum of the object ([AWS S3 docs](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/Package/-aws-sdk-client-s3/Interface/CompleteMultipartUploadCommandInput/)).
+
 # Simplified Version of the Bug
 
 ```bash
