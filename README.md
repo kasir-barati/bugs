@@ -1,3 +1,39 @@
+# Simplified Version of the Bug
+
+```bash
+[kasir@kasir-lifebooke736 bugs]$ pnpx ts-node simplified.ts
+/home/kasir/projects/bugs/node_modules/.pnpm/@smithy+smithy-client@4.1.3/node_modules/@smithy/smithy-client/dist-cjs/index.js:867
+  const response = new exceptionCtor({
+                   ^
+InvalidArgument: Invalid arguments provided for test/3e3c92c3-26cb-49b6-a41b-406a0e218800: (invalid/unknown checksum sent: invalid checksum)
+    at throwDefaultError (/home/kasir/projects/bugs/node_modules/.pnpm/@smithy+smithy-client@4.1.3/node_modules/@smithy/smithy-client/dist-cjs/index.js:867:20)
+    at /home/kasir/projects/bugs/node_modules/.pnpm/@smithy+smithy-client@4.1.3/node_modules/@smithy/smithy-client/dist-cjs/index.js:876:5
+    at de_CommandError (/home/kasir/projects/bugs/node_modules/.pnpm/@aws-sdk+client-s3@3.744.0_aws-crt@1.25.3/node_modules/@aws-sdk/client-s3/dist-cjs/index.js:4970:14)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async /home/kasir/projects/bugs/node_modules/.pnpm/@smithy+middleware-serde@4.0.2/node_modules/@smithy/middleware-serde/dist-cjs/index.js:35:20
+    at async /home/kasir/projects/bugs/node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.744.0/node_modules/@aws-sdk/middleware-sdk-s3/dist-cjs/index.js:483:18
+    at async /home/kasir/projects/bugs/node_modules/.pnpm/@smithy+middleware-retry@4.0.4/node_modules/@smithy/middleware-retry/dist-cjs/index.js:321:38
+    at async /home/kasir/projects/bugs/node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.744.0/node_modules/@aws-sdk/middleware-sdk-s3/dist-cjs/index.js:109:22
+    at async /home/kasir/projects/bugs/node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.744.0/node_modules/@aws-sdk/middleware-sdk-s3/dist-cjs/index.js:136:14
+    at async /home/kasir/projects/bugs/node_modules/.pnpm/@aws-sdk+middleware-logger@3.734.0/node_modules/@aws-sdk/middleware-logger/dist-cjs/index.js:33:22 {
+  '$fault': 'client',
+  '$metadata': {
+    httpStatusCode: 400,
+    requestId: '182420C19E2100F0',
+    extendedRequestId: 'dd9025bab4ad464b049177c95eb6ebf374d3b3fd1af9251148b658df7ac2e3e8',
+    cfId: undefined,
+    attempts: 1,
+    totalRetryDelay: 0
+  },
+  Code: 'InvalidArgument',
+  Key: '3e3c92c3-26cb-49b6-a41b-406a0e218800',
+  BucketName: 'test',
+  Resource: '/test/3e3c92c3-26cb-49b6-a41b-406a0e218800',
+  RequestId: '182420C19E2100F0',
+  HostId: 'dd9025bab4ad464b049177c95eb6ebf374d3b3fd1af9251148b658df7ac2e3e8'
+}
+```
+
 # How it works:
 
 1. Change the `fileName` to point to an absolute file.
