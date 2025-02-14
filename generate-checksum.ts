@@ -3,6 +3,9 @@ import { createHash } from "crypto";
 import { checksums } from "aws-crt";
 
 /**
+ * @todo
+ * Implement the SHA1, SHA256, and CRC32CNVME.
+ *
  * @description
  * Full object checksums in multipart uploads are only available for CRC-based checksums because they can linearize into a full object checksum.
  */
@@ -11,20 +14,19 @@ export function generateChecksum(
   algorithm: ChecksumAlgorithm
 ) {
   switch (algorithm) {
-    // TODO: implement the SHA1 & SHA256.
-    // case "SHA1":
-    // case "SHA256":
-    //   return createHash(algorithm)
-    //     .update(content.toString(), "utf8")
-    //     .digest("base64");
-    case "CRC32":
-      const crc32Checksum = checksums.crc32(content);
-      return Buffer.from(crc32Checksum.toString(), "utf8").toString("base64");
-    case "CRC32C":
+    case "CRC32": {
+      const checksumNumber = checksums.crc32(content);
+      const buffer = Buffer.alloc(4);
+      buffer.writeUInt32BE(checksumNumber, 0);
+      return buffer.toString("base64");
+    }
+    case "CRC32C": {
       const crc32cChecksum = checksums.crc32c(content);
-      return Buffer.from(crc32cChecksum.toString(), "utf8").toString("base64");
-    case "CRC64NVME":
-      const crc64nvmeChecksum = checksums.crc64nvme(content);
-      return Buffer.from(crc64nvmeChecksum.buffer).toString("base64");
+      const buffer = Buffer.alloc(4);
+      buffer.writeUInt32BE(crc32cChecksum, 0);
+      return buffer.toString("base64");
+    }
+    default:
+      throw "Not implemented!";
   }
 }
