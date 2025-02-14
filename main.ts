@@ -125,8 +125,8 @@ export class FileUploaderService {
   const fileContent = await readFile(fileName, {
     encoding: "binary",
   });
-  const { size: totalFileSize } = await stat(fileName);
   const checksum = generateChecksum(fileContent, ChecksumAlgorithm.SHA256);
+  const { size: totalFileSize } = await stat(fileName);
 
   console.log("Checksum: ", checksum);
 

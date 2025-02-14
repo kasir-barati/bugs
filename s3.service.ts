@@ -62,7 +62,6 @@ export class S3Service {
       PartNumber: chunkPart,
       Body: data,
     });
-    console.log();
     const response = await this.s3Client.send(command);
 
     if (!response.ETag) {
