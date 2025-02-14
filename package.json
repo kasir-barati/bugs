@@ -1,0 +1,21 @@
+{
+  "name": "bugs",
+  "version": "1.0.0",
+  "description": "",
+  "module": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "docker compose up -d && ts-node main.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.744.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}
