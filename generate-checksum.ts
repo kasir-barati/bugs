@@ -7,13 +7,16 @@ import { checksums } from "aws-crt";
  * Full object checksums in multipart uploads are only available for CRC-based checksums because they can linearize into a full object checksum.
  */
 export function generateChecksum(
-  content: string,
+  content: string | Buffer,
   algorithm: ChecksumAlgorithm
 ) {
   switch (algorithm) {
-    case "SHA1":
-    case "SHA256":
-      return createHash(algorithm).update(content, "utf8").digest("base64");
+    // TODO: implement the SHA1 & SHA256.
+    // case "SHA1":
+    // case "SHA256":
+    //   return createHash(algorithm)
+    //     .update(content.toString(), "utf8")
+    //     .digest("base64");
     case "CRC32":
       const crc32Checksum = checksums.crc32(content);
       return Buffer.from(crc32Checksum.toString(), "utf8").toString("base64");

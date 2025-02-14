@@ -10,6 +10,7 @@ import {
   UploadPartCommand,
 } from "@aws-sdk/client-s3";
 import { randomUUID } from "crypto";
+import { generateChecksum } from "./generate-checksum";
 
 let partNumber = 1;
 const bucket = "test";
@@ -51,8 +52,10 @@ const parts: CompletedPart[] = [];
   }
 
   const uploadId = createMultiPartUploadResponse.UploadId;
+  const myChecksumVsAws = [];
 
   for await (const chunk of stream) {
+    const myChecksum = generateChecksum(chunk, checksumAlgorithm);
     const uploadPartCommand = new UploadPartCommand({
       Bucket: bucket,
       Key: key,
@@ -63,12 +66,15 @@ const parts: CompletedPart[] = [];
     });
     const response = await client.send(uploadPartCommand);
 
+    myChecksumVsAws.push({ myChecksum, awsChecksum: response.ChecksumCRC32 });
     parts.push({
       PartNumber: partNumber++,
       ETag: response.ETag,
       ChecksumCRC32: response.ChecksumCRC32,
     });
   }
+
+  console.log(myChecksumVsAws);
 
   const command = new CompleteMultipartUploadCommand({
     Bucket: bucket,
