@@ -32,7 +32,8 @@ const parts: CompletedPart[] = [];
   const fileContent = await readFile(fileName, {
     encoding: "binary",
   });
-  const checksum = checksums.crc32(fileContent);
+  const checksumNumber = checksums.crc32(fileContent);
+  const checksum = Buffer.from(checksumNumber.toString()).toString("base64");
   const createMultiPartUploadCommand = new CreateMultipartUploadCommand({
     Bucket: bucket,
     Key: key,
@@ -75,7 +76,7 @@ const parts: CompletedPart[] = [];
     UploadId: uploadId,
     MultipartUpload: { Parts: parts },
     ChecksumType: "FULL_OBJECT",
-    ChecksumCRC32: checksum.toString(),
+    ChecksumCRC32: checksum,
   });
   const response = await client.send(command);
 

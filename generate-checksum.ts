@@ -1,7 +1,6 @@
-import { Crc32c } from "@aws-crypto/crc32c";
-import CRC32 from "crc-32";
 import { ChecksumAlgorithm } from "@aws-sdk/client-s3";
 import { createHash } from "crypto";
+import { checksums } from "aws-crt";
 
 /**
  * @description
@@ -14,15 +13,15 @@ export function generateChecksum(
   switch (algorithm) {
     case "SHA1":
     case "SHA256":
-      return createHash(algorithm).update(content, "utf8").digest("hex");
+      return createHash(algorithm).update(content, "utf8").digest("base64");
     case "CRC32":
-      return CRC32.buf(Buffer.from(content, "binary"), 0).toString();
+      const crc32Checksum = checksums.crc32(content);
+      return Buffer.from(crc32Checksum.toString()).toString("base64");
     case "CRC32C":
-      return new Crc32c()
-        .update(Uint8Array.from(Buffer.from(content)))
-        .digest()
-        .toString();
-    default:
-      throw "Unsupported algorithm";
+      const crc32cChecksum = checksums.crc32c(content);
+      return Buffer.from(crc32cChecksum.toString()).toString("base64");
+    case "CRC64NVME":
+      const crc64nvmeChecksum = checksums.crc64nvme(content);
+      return Buffer.from(crc64nvmeChecksum.buffer).toString("base64");
   }
 }

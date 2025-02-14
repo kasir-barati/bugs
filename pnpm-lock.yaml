@@ -8,15 +8,12 @@ importers:
 
   .:
     dependencies:
-      '@aws-crypto/crc32c':
-        specifier: ^5.2.0
-        version: 5.2.0
       '@aws-sdk/client-s3':
         specifier: ^3.744.0
         version: 3.744.0(aws-crt@1.25.3)
-      crc-32:
-        specifier: ^1.2.2
-        version: 1.2.2
+      aws-crt:
+        specifier: ^1.25.3
+        version: 1.25.3
       mime-types:
         specifier: ^2.1.35
         version: 2.1.35
@@ -501,11 +498,6 @@ packages:
 
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
-
-  crc-32@1.2.2:
-    resolution: {integrity: sha512-ROmzCKrTnOwybPcJApAA6WBWij23HVfGVNKqqrZpuyZOHqK2CwHSvpGuyt/UNNvaIjEd8X5IFGp4Mh+Ie1IHJQ==}
-    engines: {node: '>=0.8'}
-    hasBin: true
 
   create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
@@ -1216,7 +1208,6 @@ snapshots:
   '@aws-sdk/util-utf8-browser@3.259.0':
     dependencies:
       tslib: 2.8.1
-    optional: true
 
   '@aws-sdk/xml-builder@3.734.0':
     dependencies:
@@ -1240,7 +1231,6 @@ snapshots:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
-    optional: true
 
   '@jridgewell/resolve-uri@3.1.2': {}
 
@@ -1599,7 +1589,6 @@ snapshots:
   '@types/ws@8.5.14':
     dependencies:
       '@types/node': 22.13.4
-    optional: true
 
   acorn-walk@8.3.4:
     dependencies:
@@ -1609,8 +1598,7 @@ snapshots:
 
   arg@4.1.3: {}
 
-  asynckit@0.4.0:
-    optional: true
+  asynckit@0.4.0: {}
 
   aws-crt@1.25.3:
     dependencies:
@@ -1626,7 +1614,6 @@ snapshots:
       - debug
       - supports-color
       - utf-8-validate
-    optional: true
 
   axios@1.7.9:
     dependencies:
@@ -1635,20 +1622,16 @@ snapshots:
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
-    optional: true
 
-  balanced-match@1.0.2:
-    optional: true
+  balanced-match@1.0.2: {}
 
-  base64-js@1.5.1:
-    optional: true
+  base64-js@1.5.1: {}
 
   bl@4.1.0:
     dependencies:
       buffer: 5.7.1
       inherits: 2.0.4
       readable-stream: 3.6.2
-    optional: true
 
   bowser@2.11.0: {}
 
@@ -1656,36 +1639,29 @@ snapshots:
     dependencies:
       balanced-match: 1.0.2
       concat-map: 0.0.1
-    optional: true
 
-  buffer-from@1.1.2:
-    optional: true
+  buffer-from@1.1.2: {}
 
   buffer@5.7.1:
     dependencies:
       base64-js: 1.5.1
       ieee754: 1.2.1
-    optional: true
 
   buffer@6.0.3:
     dependencies:
       base64-js: 1.5.1
       ieee754: 1.2.1
-    optional: true
 
   combined-stream@1.0.8:
     dependencies:
       delayed-stream: 1.0.0
-    optional: true
 
   commist@1.1.0:
     dependencies:
       leven: 2.1.0
       minimist: 1.2.8
-    optional: true
 
-  concat-map@0.0.1:
-    optional: true
+  concat-map@0.0.1: {}
 
   concat-stream@2.0.0:
     dependencies:
@@ -1693,25 +1669,18 @@ snapshots:
       inherits: 2.0.4
       readable-stream: 3.6.2
       typedarray: 0.0.6
-    optional: true
 
-  core-util-is@1.0.3:
-    optional: true
-
-  crc-32@1.2.2: {}
+  core-util-is@1.0.3: {}
 
   create-require@1.1.1: {}
 
-  crypto-js@4.2.0:
-    optional: true
+  crypto-js@4.2.0: {}
 
   debug@4.4.0:
     dependencies:
       ms: 2.1.3
-    optional: true
 
-  delayed-stream@1.0.0:
-    optional: true
+  delayed-stream@1.0.0: {}
 
   diff@4.0.2: {}
 
@@ -1721,7 +1690,6 @@ snapshots:
       inherits: 2.0.4
       readable-stream: 2.3.8
       stream-shift: 1.0.3
-    optional: true
 
   duplexify@4.1.3:
     dependencies:
@@ -1729,29 +1697,24 @@ snapshots:
       inherits: 2.0.4
       readable-stream: 3.6.2
       stream-shift: 1.0.3
-    optional: true
 
   end-of-stream@1.4.4:
     dependencies:
       once: 1.4.0
-    optional: true
 
   fast-xml-parser@4.4.1:
     dependencies:
       strnum: 1.0.5
 
-  follow-redirects@1.15.9:
-    optional: true
+  follow-redirects@1.15.9: {}
 
   form-data@4.0.1:
     dependencies:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.35
-    optional: true
 
-  fs.realpath@1.0.0:
-    optional: true
+  fs.realpath@1.0.0: {}
 
   glob@7.2.3:
     dependencies:
@@ -1761,44 +1724,34 @@ snapshots:
       minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
-    optional: true
 
   help-me@3.0.0:
     dependencies:
       glob: 7.2.3
       readable-stream: 3.6.2
-    optional: true
 
-  ieee754@1.2.1:
-    optional: true
+  ieee754@1.2.1: {}
 
   inflight@1.0.6:
     dependencies:
       once: 1.4.0
       wrappy: 1.0.2
-    optional: true
 
-  inherits@2.0.4:
-    optional: true
+  inherits@2.0.4: {}
 
-  isarray@1.0.0:
-    optional: true
+  isarray@1.0.0: {}
 
   isomorphic-ws@4.0.1(ws@8.18.0):
     dependencies:
       ws: 8.18.0
-    optional: true
 
-  js-sdsl@4.3.0:
-    optional: true
+  js-sdsl@4.3.0: {}
 
-  leven@2.1.0:
-    optional: true
+  leven@2.1.0: {}
 
   lru-cache@6.0.0:
     dependencies:
       yallist: 4.0.0
-    optional: true
 
   make-error@1.3.6: {}
 
@@ -1811,10 +1764,8 @@ snapshots:
   minimatch@3.1.2:
     dependencies:
       brace-expansion: 1.1.11
-    optional: true
 
-  minimist@1.2.8:
-    optional: true
+  minimist@1.2.8: {}
 
   mqtt-packet@6.10.0:
     dependencies:
@@ -1823,7 +1774,6 @@ snapshots:
       process-nextick-args: 2.0.1
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   mqtt@4.3.8:
     dependencies:
@@ -1848,10 +1798,8 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
-    optional: true
 
-  ms@2.1.3:
-    optional: true
+  ms@2.1.3: {}
 
   number-allocator@1.0.14:
     dependencies:
@@ -1859,30 +1807,23 @@ snapshots:
       js-sdsl: 4.3.0
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   once@1.4.0:
     dependencies:
       wrappy: 1.0.2
-    optional: true
 
-  path-is-absolute@1.0.1:
-    optional: true
+  path-is-absolute@1.0.1: {}
 
-  process-nextick-args@2.0.1:
-    optional: true
+  process-nextick-args@2.0.1: {}
 
-  process@0.11.10:
-    optional: true
+  process@0.11.10: {}
 
-  proxy-from-env@1.1.0:
-    optional: true
+  proxy-from-env@1.1.0: {}
 
   pump@3.0.2:
     dependencies:
       end-of-stream: 1.4.4
       once: 1.4.0
-    optional: true
 
   readable-stream@2.3.8:
     dependencies:
@@ -1893,44 +1834,34 @@ snapshots:
       safe-buffer: 5.1.2
       string_decoder: 1.1.1
       util-deprecate: 1.0.2
-    optional: true
 
   readable-stream@3.6.2:
     dependencies:
       inherits: 2.0.4
       string_decoder: 1.3.0
       util-deprecate: 1.0.2
-    optional: true
 
-  reinterval@1.1.0:
-    optional: true
+  reinterval@1.1.0: {}
 
-  rfdc@1.4.1:
-    optional: true
+  rfdc@1.4.1: {}
 
-  safe-buffer@5.1.2:
-    optional: true
+  safe-buffer@5.1.2: {}
 
-  safe-buffer@5.2.1:
-    optional: true
+  safe-buffer@5.2.1: {}
 
   split2@3.2.2:
     dependencies:
       readable-stream: 3.6.2
-    optional: true
 
-  stream-shift@1.0.3:
-    optional: true
+  stream-shift@1.0.3: {}
 
   string_decoder@1.1.1:
     dependencies:
       safe-buffer: 5.1.2
-    optional: true
 
   string_decoder@1.3.0:
     dependencies:
       safe-buffer: 5.2.1
-    optional: true
 
   strnum@1.0.5: {}
 
@@ -1954,33 +1885,26 @@ snapshots:
 
   tslib@2.8.1: {}
 
-  typedarray@0.0.6:
-    optional: true
+  typedarray@0.0.6: {}
 
   typescript@5.7.3: {}
 
   undici-types@6.20.0: {}
 
-  util-deprecate@1.0.2:
-    optional: true
+  util-deprecate@1.0.2: {}
 
   uuid@9.0.1: {}
 
   v8-compile-cache-lib@3.0.1: {}
 
-  wrappy@1.0.2:
-    optional: true
+  wrappy@1.0.2: {}
 
-  ws@7.5.10:
-    optional: true
+  ws@7.5.10: {}
 
-  ws@8.18.0:
-    optional: true
+  ws@8.18.0: {}
 
-  xtend@4.0.2:
-    optional: true
+  xtend@4.0.2: {}
 
-  yallist@4.0.0:
-    optional: true
+  yallist@4.0.0: {}
 
   yn@3.1.1: {}
