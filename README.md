@@ -2,6 +2,15 @@
 
 https://stackoverflow.com/questions/79440191/invalid-checksum-when-using-multipart-upload-with-full-object-checksum-in-nodejs?noredirect=1#comment140099479_79440191
 
+> [!NOTE]
+>
+> Other places I have asked the same question but since they are sometimes a bit different I will link them here:
+>
+> - [Discord, Reactiflux server](https://discord.com/channels/102860784329052160/145170347921113088/1339859485560147999).
+> - [Discord, AWS server](https://discord.com/channels/423842546947457024/1339901868087840789/1339901868087840789).
+> - [GitHub discussions, Minio, CompleteMultipartUpload fails with InvalidPart](https://github.com/minio/minio/discussions/16770).
+> - [GitHub discussions, AWS JS SDK, InvalidPart: One or more of the specified parts could not be found. The part may not have been uploaded, or the specified entity tag may not match the part's entity tag](https://github.com/aws/aws-sdk-js-v3/discussions/6883).
+
 ## Results
 
 - Checksum should be a Base64 encoded, 32-bit CRC32 checksum of the object ([AWS S3 docs](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/Package/-aws-sdk-client-s3/Interface/CompleteMultipartUploadCommandInput/)).
