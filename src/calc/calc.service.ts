@@ -27,6 +27,7 @@ export class CalcService {
           subject.error(err);
         },
         complete: () => {
+          // TODO: Will not be triggered!
           console.log('Complete handler...');
           console.log(counter.getCount());
           subject.complete();

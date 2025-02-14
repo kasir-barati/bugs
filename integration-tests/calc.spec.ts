@@ -2,6 +2,7 @@ import * as ProtoLoader from '@grpc/proto-loader';
 import { join } from 'path';
 import {
   ChannelCredentials,
+  Client,
   credentials,
   loadPackageDefinition,
 } from '@grpc/grpc-js';
@@ -12,7 +13,7 @@ interface CalcService {
   new (
     url: string,
     credentials: ChannelCredentials,
-  ): { sum: () => ClientDuplexStreamImpl<SumReq, SumRes> };
+  ): Client & { sum: () => ClientDuplexStreamImpl<SumReq, SumRes> };
 }
 
 const calcProtobufFilePath = join(
@@ -24,7 +25,9 @@ const calcProtobufFilePath = join(
 );
 
 describe('AppController (e2e)', () => {
-  let client: { sum: (...args: any) => ClientDuplexStreamImpl<SumReq, SumRes> };
+  let client: Client & {
+    sum: (...args: any) => ClientDuplexStreamImpl<SumReq, SumRes>;
+  };
 
   beforeAll(() => {
     const proto = ProtoLoader.loadSync(calcProtobufFilePath, {
@@ -62,15 +65,14 @@ describe('AppController (e2e)', () => {
     });
 
     // Act
-    // callHandler.write({ number: 1 }, 'utf-8');
-    // callHandler.write({ number: 1 }, 'utf-8');
-    // callHandler.write({ number: 1 }, 'utf-8');
+    callHandler.write({ number: 1 }, 'utf-8');
+    callHandler.write({ number: 1 }, 'utf-8');
+    callHandler.write({ number: 1 }, 'utf-8');
 
     // Assert
     setTimeout(() => {
-      console.log('result at the end of the is ' + result);
       callHandler.end();
-      console.log('Is the handler  closed? ' + callHandler.closed);
+      client.close();
       expect(result).toBe(4);
       callHandler.removeAllListeners();
       done();
