@@ -33,7 +33,7 @@ export class S3Service {
       Bucket: bucket,
       Key: key,
       ChecksumAlgorithm: checksumAlgorithm,
-      // ChecksumType: "FULL_OBJECT",
+      ChecksumType: "FULL_OBJECT",
       ContentType: mimetype,
       ContentDisposition: `attachment; filename="${originalname}"`,
     });
