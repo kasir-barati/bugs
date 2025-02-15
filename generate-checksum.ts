@@ -1,5 +1,6 @@
 import { ChecksumAlgorithm } from "@aws-sdk/client-s3";
 import { checksums } from "aws-crt";
+import { createHash } from "crypto";
 
 /**
  * @todo
@@ -37,6 +38,9 @@ export function generateChecksum(
       /**@description Convert the 4-byte buffer to Base64 */
       return buffer.toString("base64");
     }
+    case "SHA1":
+    case "SHA256":
+      return createHash(algorithm).update(content).digest("base64");
     default:
       throw "Not implemented!";
   }
