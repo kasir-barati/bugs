@@ -1,6 +1,5 @@
 import { createReadStream } from "fs";
 import { readFile } from "fs/promises";
-import { checksums } from "aws-crt";
 import {
   ChecksumAlgorithm,
   CompletedPart,
@@ -16,7 +15,7 @@ let partNumber = 1;
 const bucket = "test";
 const key = randomUUID();
 const fileName = "upload-me.mp4";
-const checksumAlgorithm = ChecksumAlgorithm.CRC32;
+const checksumAlgorithm = ChecksumAlgorithm.SHA256;
 const client = new S3Client({
   region: "eu",
   credentials: { accessKeyId: "adminadmin", secretAccessKey: "adminadmin" },
@@ -36,7 +35,7 @@ const parts: CompletedPart[] = [];
     Bucket: bucket,
     Key: key,
     ChecksumAlgorithm: checksumAlgorithm,
-    ChecksumType: "COMPOSITE",
+    // ChecksumType: "FULL_OBJECT", Does not change anything if I choose FULL_OBJECT or COMPOSITE!
     ContentType: "video/mp4",
     ContentDisposition: `attachment; filename="${fileName}"`,
   });
@@ -61,14 +60,14 @@ const parts: CompletedPart[] = [];
       ChecksumAlgorithm: checksumAlgorithm,
       PartNumber: partNumber,
       Body: chunk,
-      // ChecksumCRC32: chunkChecksum,
+      // ChecksumSHA256: chunkChecksum,
     });
     const response = await client.send(uploadPartCommand);
 
     parts.push({
       PartNumber: partNumber++,
       ETag: response.ETag,
-      ChecksumCRC32: response.ChecksumCRC32,
+      ChecksumSHA256: response.ChecksumSHA256,
     });
   }
 
@@ -77,12 +76,12 @@ const parts: CompletedPart[] = [];
     Key: key,
     UploadId: uploadId,
     MultipartUpload: { Parts: parts },
-    // ChecksumType: "COMPOSITE",
-    // ChecksumCRC32: checksum,
+    // ChecksumType: "FULL_OBJECT", if I uncomment these two AWS S3 will throw an error at me!
+    // ChecksumCRC32: checksum, if I uncomment these two AWS S3 will throw an error at me!
   });
   const response = await client.send(command);
 
   console.log("Parts: ", parts);
-  console.log("response.ChecksumCRC32: " + response.ChecksumCRC32);
+  console.log("AWS ChecksumSHA256: " + response.ChecksumSHA256);
   console.log("My checksum: " + checksum);
 })();
