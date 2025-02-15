@@ -149,13 +149,14 @@ export class FileUploaderService {
   const fileContent = await readFile(fileName, {
     encoding: "binary",
   });
-  const checksum = generateChecksum(fileContent, ChecksumAlgorithm.CRC32);
+  const checksumAlgorithm = ChecksumAlgorithm.SHA256;
+  const checksum = generateChecksum(fileContent, checksumAlgorithm);
   const { size: totalFileSize } = await stat(fileName);
 
   console.log("Initiating...");
 
   await fileUploaderService.createMultipartUpload(
-    ChecksumAlgorithm.CRC32,
+    checksumAlgorithm,
     checksum,
     fileName,
     totalFileSize

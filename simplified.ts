@@ -33,7 +33,7 @@ const parts: CompletedPart[] = [];
   const fileContent = await readFile(fileName, {
     encoding: "binary",
   });
-  const checksum = generateChecksum(fileContent, ChecksumAlgorithm.CRC32);
+  const checksum = generateChecksum(fileContent, checksumAlgorithm);
   const createMultiPartUploadCommand = new CreateMultipartUploadCommand({
     Bucket: bucket,
     Key: key,

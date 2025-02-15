@@ -5,7 +5,8 @@
   "module": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "docker compose up -d && ts-node main.ts"
+    "start": "docker compose up -d && ts-node main.ts",
+    "simplified": "docker compose up -d && ts-node simplified.ts"
   },
   "keywords": [],
   "author": "",

@@ -10,12 +10,18 @@ https://stackoverflow.com/questions/79440191/invalid-checksum-when-using-multipa
 > - [Discord, AWS server](https://discord.com/channels/423842546947457024/1339901868087840789/1339901868087840789).
 > - [GitHub discussions, Minio, CompleteMultipartUpload fails with InvalidPart](https://github.com/minio/minio/discussions/16770).
 > - [GitHub discussions, AWS JS SDK, InvalidPart: One or more of the specified parts could not be found. The part may not have been uploaded, or the specified entity tag may not match the part's entity tag](https://github.com/aws/aws-sdk-js-v3/discussions/6883).
+> - [AWS, XAmzContentChecksumMismatch: The provided 'x-amz-checksum' header does not match what was computed.](https://repost.aws/questions/QU5H7iryj4S3q4u5-UCsmasQ/xamzcontentchecksummismatch-the-provided-x-amz-checksum-header-does-not-match-what-was-computed).
 
 ## Results
 
-- Checksum should be a Base64 encoded, 32-bit CRC32 checksum of the object ([AWS S3 docs](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/Package/-aws-sdk-client-s3/Interface/CompleteMultipartUploadCommandInput/)).
+- Checksum should be a Base64 encoded, 32-bit CRC32 checksum of the object ([AWS S3 docs](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/Package/-aws-sdk-client-s3/Interface/CompleteMultipartUploadCommandInput/)). Read [this Stackoverflow Q&A](https://stackoverflow.com/a/79440513/8784518) for more details.
 
-# Simplified Version of the Bug
+# Error messages
+
+<details>
+<summary>
+<code>InvalidArgument: Invalid arguments provided for test/3e3c92c3-26cb-49b6-a41b-406a0e218800: (invalid/unknown checksum sent: invalid checksum</code>
+</summary>
 
 ```bash
 [kasir@kasir-lifebooke736 bugs]$ pnpx ts-node simplified.ts
@@ -51,28 +57,12 @@ InvalidArgument: Invalid arguments provided for test/3e3c92c3-26cb-49b6-a41b-406
 }
 ```
 
-# How it works:
+</details>
 
-1. Change the `fileName` to point to an absolute file.
-   - It should be bigger than 5MB.
-2. `docker compose up -d`
-3. Create a bucket named "test".
-4. `pnpm start`.
-
-# Steps to reproduce
-
-```bash
-pnpm install --frozen-lockfile
-docker compose up -d
-```
-
-Create a bucket named "test" in your Minio dashboard, username and password are the same: adminadmin
-
-```bash
-pnpm start
-```
-
-## Logs
+<details>
+<summary>
+<code>InvalidPart: One or more of the specified parts could not be found.  The part may not have been uploaded, or the specified entity tag may not match the part's entity tag.</code>
+</summary>
 
 ```bash
 /home/kasir/projects/bugs/node_modules/.pnpm/@smithy+smithy-client@4.1.3/node_modules/@smithy/smithy-client/dist-cjs/index.js:867
@@ -107,3 +97,23 @@ InvalidPart: One or more of the specified parts could not be found.  The part ma
 }
  ELIFECYCLE  Command failed with exit code 1.
 ```
+
+</details>
+
+# How to Run the `main.ts`
+
+1. `pnpm install --frozen-lockfile`
+2. Change the `fileName` to point to an absolute file.
+   - It should be bigger than 5MB.
+3. `docker compose up -d`
+4. Create a bucket named "test".
+5. `pnpm start`.
+
+# How to Run the `simplified.ts`
+
+1. `pnpm install --frozen-lockfile`
+2. Change the `fileName` to point to an absolute file.
+   - It should be bigger than 5MB.
+3. `docker compose up -d`
+4. Create a bucket named "test".
+5. `pnpx simplified`.
