@@ -52,10 +52,11 @@ const parts: CompletedPart[] = [];
   }
 
   const uploadId = createMultiPartUploadResponse.UploadId;
-  const myChecksumVsAws = [];
 
   for await (const chunk of stream) {
-    const myChecksum = generateChecksum(chunk, checksumAlgorithm);
+    // You can optionally compute the checksum in your code making sure that if something was altered in between AWS will fail that chunk upload.
+    // const chunkChecksum = generateChecksum(chunk, checksumAlgorithm);
+
     const uploadPartCommand = new UploadPartCommand({
       Bucket: bucket,
       Key: key,
@@ -63,18 +64,16 @@ const parts: CompletedPart[] = [];
       ChecksumAlgorithm: checksumAlgorithm,
       PartNumber: partNumber,
       Body: chunk,
+      // ChecksumCRC32: chunkChecksum,
     });
     const response = await client.send(uploadPartCommand);
 
-    myChecksumVsAws.push({ myChecksum, awsChecksum: response.ChecksumCRC32 });
     parts.push({
       PartNumber: partNumber++,
       ETag: response.ETag,
       ChecksumCRC32: response.ChecksumCRC32,
     });
   }
-
-  console.log(myChecksumVsAws);
 
   const command = new CompleteMultipartUploadCommand({
     Bucket: bucket,
