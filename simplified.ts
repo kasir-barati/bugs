@@ -30,7 +30,7 @@ const parts: CompletedPart[] = [];
   const stream = createReadStream(fileName, {
     highWaterMark: bufferSizeInByte,
   });
-  const fileContent = await readFile(fileName, { encoding: "binary" });
+  const fileContent = await readFile(fileName);
   const checksum = generateChecksum(fileContent, checksumAlgorithm);
   const createMultiPartUploadCommand = new CreateMultipartUploadCommand({
     Bucket: bucket,
