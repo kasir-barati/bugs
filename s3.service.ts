@@ -4,16 +4,9 @@ import {
   CompletedPart,
   CompleteMultipartUploadCommand,
   CreateMultipartUploadCommand,
-  GetObjectCommand,
-  GetObjectOutput,
-  HeadObjectCommand,
-  NoSuchKey,
-  PutObjectCommand,
-  PutObjectOutput,
   S3Client,
   UploadPartCommand,
 } from "@aws-sdk/client-s3";
-import { PutObjectCommandInput } from "@aws-sdk/client-s3/dist-types/commands/PutObjectCommand";
 
 export class S3Service {
   constructor(private readonly s3Client: S3Client) {}
@@ -68,21 +61,12 @@ export class S3Service {
     return response;
   }
 
-  async getEtag(bucket: string, key: string): Promise<string> {
-    const response = await this.s3Client.send(
-      new HeadObjectCommand({
-        Bucket: bucket,
-        Key: key,
-      })
-    );
-
-    if (!response.ETag) {
-      throw "ETag is missing";
-    }
-
-    return response.ETag.replaceAll('"', "");
-  }
-
+  /**
+   * @description
+   * If the passed checksum does not match the one computed in AWS S3 it will fail it.
+   *
+   * After you initiate a multipart upload and upload one or more parts, you must either complete or stop the multipart upload to stop incurring charges for storage of the uploaded parts.
+   */
   async completeMultipartUpload(
     bucket: string,
     key: string,
@@ -102,10 +86,10 @@ export class S3Service {
       Bucket: bucket,
       Key: key,
       UploadId: uploadId,
-      // ChecksumType: "FULL_OBJECT",
-      // ...(algorithm === "CRC32" && { ChecksumCRC32: checksum }),
-      // ...(algorithm === "CRC32C" && { ChecksumCRC32C: checksum }),
-      // ...(algorithm === "CRC64NVME" && { ChecksumCRC64NVME: checksum }),
+      ChecksumType: "FULL_OBJECT",
+      ...(algorithm === "CRC32" && { ChecksumCRC32: checksum }),
+      ...(algorithm === "CRC32C" && { ChecksumCRC32C: checksum }),
+      ...(algorithm === "CRC64NVME" && { ChecksumCRC64NVME: checksum }),
       MultipartUpload: { Parts },
     });
     const response = await this.s3Client.send(command);
@@ -125,59 +109,5 @@ export class S3Service {
     });
 
     await this.s3Client.send(command);
-  }
-
-  async getObjectByKey(bucket: string, key: string): Promise<GetObjectOutput> {
-    try {
-      return await this.s3Client.send(
-        new GetObjectCommand({ Bucket: bucket, Key: key })
-      );
-    } catch (e) {
-      if (e instanceof NoSuchKey) {
-        console.error(`${e.name}: ${e.message} "${key}"`);
-      } else {
-        console.error(e);
-      }
-      throw `Cannot find file using key ${key}`;
-    }
-  }
-
-  async objectExists(bucket: string, key: string): Promise<boolean> {
-    try {
-      await this.s3Client.send(
-        new HeadObjectCommand({ Bucket: bucket, Key: key })
-      );
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
-  async putObjectByKey(
-    bucket: string,
-    key: string,
-    buffer: Buffer,
-    contentType?: string,
-    contentDisposition?: string
-  ): Promise<PutObjectOutput> {
-    const input: PutObjectCommandInput = {
-      Bucket: bucket,
-      Key: key,
-      Body: buffer,
-    };
-
-    if (contentDisposition) {
-      input.ContentType = contentType;
-    }
-
-    if (contentDisposition) {
-      input.ContentDisposition = contentDisposition;
-    }
-
-    try {
-      return await this.s3Client.send(new PutObjectCommand(input));
-    } catch {
-      throw `cannot store file ${key} in s3 bucket ${bucket}`;
-    }
   }
 }

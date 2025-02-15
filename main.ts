@@ -4,8 +4,8 @@ import { createReadStream } from "fs";
 import { readFile, stat } from "fs/promises";
 import mime from "mime-types";
 
-import { S3Service } from "./s3.service";
 import { generateChecksum } from "./generate-checksum";
+import { S3Service } from "./s3.service";
 
 const client = new S3Client({
   region: "eu",
@@ -72,7 +72,6 @@ export class FileUploaderService {
       data
     );
 
-    console.debug(this.parts);
     console.debug(
       `Received ${this.receivedSize} bytes of ${this.totalSize} bytes`
     );
@@ -98,21 +97,11 @@ export class FileUploaderService {
     });
   }
 
-  async isFileCorrupted(): Promise<boolean> {
-    if (!this.uploadId) {
-      throw "uploadId is not set";
-    }
-
-    const etag = await s3StorageService.getEtag(bucket, key);
-
-    return etag !== this.checksum;
-  }
-
   /**
    * @returns
    * The ETag of the object part or maybe it will be undefined if AWS is still processing the object.
    */
-  async completeMultipartUpload(): Promise<string | undefined> {
+  async completeMultipartUpload() {
     if (!this.uploadId || !this.algorithm || !this.checksum) {
       const missingProperty = !this.uploadId
         ? "uploadId"
@@ -127,7 +116,7 @@ export class FileUploaderService {
       throw `Received size ${this.receivedSize} does not match total size ${this.totalSize}`;
     }
 
-    return s3StorageService.completeMultipartUpload(
+    const etag = await s3StorageService.completeMultipartUpload(
       bucket,
       key,
       this.uploadId,
@@ -135,6 +124,10 @@ export class FileUploaderService {
       this.algorithm,
       this.parts
     );
+
+    console.log("Final ETAG: ", etag);
+    console.log("CHECKSUM: ", this.checksum);
+    console.log("PARTS: ", this.parts);
   }
 
   async abortMultipartUpload(): Promise<void> {
@@ -149,7 +142,7 @@ export class FileUploaderService {
 (async () => {
   const fileUploaderService = new FileUploaderService();
   const fileName = "upload-me.mp4";
-  const bufferSizeInByte = 4086 * 2048; // ~8 MB
+  const bufferSizeInByte = 5 * 1024 * 1024; // 5MB (AWS minimum part size)
   const stream = createReadStream(fileName, {
     highWaterMark: bufferSizeInByte,
   });
@@ -159,7 +152,7 @@ export class FileUploaderService {
   const checksum = generateChecksum(fileContent, ChecksumAlgorithm.CRC32);
   const { size: totalFileSize } = await stat(fileName);
 
-  console.log("Checksum: ", checksum);
+  console.log("Initiating...");
 
   await fileUploaderService.createMultipartUpload(
     ChecksumAlgorithm.CRC32,
