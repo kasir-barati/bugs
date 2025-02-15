@@ -79,25 +79,12 @@ const parts: CompletedPart[] = [];
     Key: key,
     UploadId: uploadId,
     MultipartUpload: { Parts: parts },
-    // ChecksumType: "FULL_OBJECT",
+    ChecksumType: "FULL_OBJECT",
     // ChecksumCRC32: checksum,
   });
   const response = await client.send(command);
-  const temp = concatenateAndCalculateTheChecksum();
 
-  console.log("response.ETag: " + response.ETag);
-  console.log("response.ChecksumCRC32: " + response.ChecksumCRC32);
   console.log("Parts: ", parts);
+  console.log("response.ChecksumCRC32: " + response.ChecksumCRC32);
   console.log("My checksum: " + checksum);
-  console.log("Concatenated checksum: " + temp);
 })();
-
-function concatenateAndCalculateTheChecksum() {
-  const concatenatedChecksums = parts
-    .sort((a, b) => a.PartNumber! - b.PartNumber!)
-    .reduce((accumulator, current) => {
-      return (accumulator += current.ChecksumCRC32);
-    }, "");
-
-  return generateChecksum(concatenatedChecksums, ChecksumAlgorithm.CRC32);
-}
