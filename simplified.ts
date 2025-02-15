@@ -30,15 +30,13 @@ const parts: CompletedPart[] = [];
   const stream = createReadStream(fileName, {
     highWaterMark: bufferSizeInByte,
   });
-  const fileContent = await readFile(fileName, {
-    encoding: "binary",
-  });
+  const fileContent = await readFile(fileName, { encoding: "binary" });
   const checksum = generateChecksum(fileContent, checksumAlgorithm);
   const createMultiPartUploadCommand = new CreateMultipartUploadCommand({
     Bucket: bucket,
     Key: key,
     ChecksumAlgorithm: checksumAlgorithm,
-    ChecksumType: "FULL_OBJECT",
+    ChecksumType: "COMPOSITE",
     ContentType: "video/mp4",
     ContentDisposition: `attachment; filename="${fileName}"`,
   });
@@ -79,7 +77,7 @@ const parts: CompletedPart[] = [];
     Key: key,
     UploadId: uploadId,
     MultipartUpload: { Parts: parts },
-    ChecksumType: "FULL_OBJECT",
+    // ChecksumType: "COMPOSITE",
     // ChecksumCRC32: checksum,
   });
   const response = await client.send(command);

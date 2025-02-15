@@ -9,7 +9,7 @@ import { createHash } from "crypto";
  * @description
  * Full object checksums in multipart uploads are only available for CRC-based checksums because they can linearize into a full object checksum.
  *
- * To generate a CRC32 checksum that matches AWS S3's, you need to encode the 32-bit integer directly as a 4-byte buffer in big-endian format before converting to Base64.
+ * To generate a CRC32 checksum that matches AWS S3's, you need to encode the 32-bit integer directly as a 4-byte buffer in big-endian format before converting it to Base64.
  */
 export function generateChecksum(
   content: string | Buffer,
