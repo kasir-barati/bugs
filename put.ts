@@ -40,6 +40,7 @@ client.middlewareStack.add(logRequestMiddleware, { step: "finalizeRequest" });
     ContentType: "video/mp4",
     ContentDisposition: `attachment; filename="${fileName}"`,
     ChecksumSHA256: checksum,
+    Body: fileContent,
   });
   const response = await client.send(command);
 
