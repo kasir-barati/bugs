@@ -15,7 +15,7 @@ let partNumber = 1;
 const bucket = "test";
 const key = randomUUID();
 const fileName = "upload-me.mp4";
-const checksumAlgorithm = ChecksumAlgorithm.SHA256;
+const checksumAlgorithm = ChecksumAlgorithm.CRC32;
 const client = new S3Client({
   region: "eu",
   credentials: { accessKeyId: "adminadmin", secretAccessKey: "adminadmin" },
@@ -60,14 +60,14 @@ const parts: CompletedPart[] = [];
       ChecksumAlgorithm: checksumAlgorithm,
       PartNumber: partNumber,
       Body: chunk,
-      // ChecksumSHA256: chunkChecksum,
+      // ChecksumCRC32: chunkChecksum,
     });
     const response = await client.send(uploadPartCommand);
 
     parts.push({
       PartNumber: partNumber++,
       ETag: response.ETag,
-      ChecksumSHA256: response.ChecksumSHA256,
+      ChecksumCRC32: response.ChecksumCRC32,
     });
   }
 
@@ -81,7 +81,7 @@ const parts: CompletedPart[] = [];
   });
   const response = await client.send(command);
 
-  console.log("Parts: ", parts);
-  console.log("AWS ChecksumSHA256: " + response.ChecksumSHA256);
+  console.log("AWS response: ");
+  console.dir(response, { depth: null });
   console.log("My checksum: " + checksum);
 })();
