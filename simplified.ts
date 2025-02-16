@@ -1,6 +1,7 @@
 import { createReadStream } from "fs";
 import { readFile } from "fs/promises";
 import {
+  AbortMultipartUploadCommand,
   ChecksumAlgorithm,
   CompletedPart,
   CompleteMultipartUploadCommand,
@@ -10,8 +11,10 @@ import {
 } from "@aws-sdk/client-s3";
 import { randomUUID } from "crypto";
 import { generateChecksum } from "./generate-checksum";
+import { isIn } from "class-validator";
 
 let partNumber = 1;
+let uploadId: string | undefined;
 const bucket = "test";
 const key = randomUUID();
 const fileName = "upload-me.mp4";
@@ -29,6 +32,13 @@ const client = new S3Client({
 const parts: CompletedPart[] = [];
 
 (async () => {
+  if (
+    isIn(checksumAlgorithm, [ChecksumAlgorithm.SHA1, ChecksumAlgorithm.SHA256])
+  ) {
+    // https://docs.aws.amazon.com/AmazonS3/latest/userguide/checking-object-integrity.html#Full-object-checksums
+    throw "AWS S3 due to technical reasons only supports CRC-based checksum checks!";
+  }
+
   const bufferSizeInByte = 5 * 1024 * 1024; // 5MB (AWS minimum part size)
   const stream = createReadStream(fileName, {
     highWaterMark: bufferSizeInByte,
@@ -52,7 +62,7 @@ const parts: CompletedPart[] = [];
     throw "UploadId is missing";
   }
 
-  const uploadId = createMultiPartUploadResponse.UploadId;
+  uploadId = createMultiPartUploadResponse.UploadId;
 
   for await (const chunk of stream) {
     // You can optionally compute the checksum in your code making sure that if something was altered in between AWS will fail that chunk upload.
@@ -96,4 +106,27 @@ const parts: CompletedPart[] = [];
   console.log("AWS response: ");
   console.dir(response, { depth: null });
   console.log("My checksum: " + checksum);
-})();
+})().catch(async (error) => {
+  // In case of error clean up your S3 bucket, but this should not be a reason to not configure a lifecycle rule: https://stackoverflow.com/a/53634176/8784518
+  console.log({
+    uploadId,
+    bucket,
+    key,
+    fileName,
+    checksumAlgorithm,
+  });
+
+  if (!uploadId) {
+    throw error;
+  }
+
+  const command = new AbortMultipartUploadCommand({
+    Bucket: bucket,
+    Key: key,
+    UploadId: uploadId,
+  });
+
+  await client.send(command);
+
+  throw error;
+});
