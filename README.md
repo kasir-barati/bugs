@@ -15,6 +15,11 @@ https://stackoverflow.com/questions/79440191/invalid-checksum-when-using-multipa
 ## Results
 
 - Checksum should be a Base64 encoded, 32-bit CRC32 checksum of the object ([AWS S3 docs](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/Package/-aws-sdk-client-s3/Interface/CompleteMultipartUploadCommandInput/)). Read [this Stackoverflow Q&A](https://stackoverflow.com/a/79440513/8784518) for more details.
+- It was an issue with Minio and if you generate the checksum correctly it should've worked!
+
+# YouTube
+
+So I've explained everything in this short Video, take a look: [MultipartUpload In NodeJS + using Pre-calculated checksum for the file](https://youtu.be/Pgl_NmbxPUo).
 
 # Error messages
 
