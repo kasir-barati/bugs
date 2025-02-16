@@ -1,6 +1,6 @@
 services:
   minio:
-    image: minio/minio
+    image: minio/minio:RELEASE.2025-02-07T23-21-09Z-cpuv1
     ports:
       - 9000:9000 # API
       - 9001:9001 # console
@@ -26,7 +26,6 @@ services:
       /usr/bin/mc admin info my_minio;
       /usr/bin/mc mb my_minio/test;
       /usr/bin/mc admin trace --verbose my_minio;
-      exit 0;
       "
 
 volumes:
