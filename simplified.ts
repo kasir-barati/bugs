@@ -19,11 +19,12 @@ const checksumAlgorithm = ChecksumAlgorithm.CRC32;
 const client = new S3Client({
   region: "eu",
   credentials: {
-    accessKeyId: "aws",
-    secretAccessKey: "aws",
+    accessKeyId: "adminadmin",
+    secretAccessKey: "adminadmin",
   },
-  // endpoint: "http://localhost:9000",
-  // forcePathStyle: true,
+  // Just needed in Minio
+  endpoint: "http://localhost:9000",
+  forcePathStyle: true,
 });
 const parts: CompletedPart[] = [];
 
@@ -37,8 +38,9 @@ const parts: CompletedPart[] = [];
   const createMultiPartUploadCommand = new CreateMultipartUploadCommand({
     Bucket: bucket,
     Key: key,
-    ChecksumAlgorithm: checksumAlgorithm, // If I comment this it will skip the whole checksum check all together!
-    ChecksumType: "FULL_OBJECT", // Does not change anything if I choose FULL_OBJECT or COMPOSITE!
+    ChecksumAlgorithm: checksumAlgorithm,
+    // In Minio, this config option does not change anything if I choose FULL_OBJECT or COMPOSITE.
+    ChecksumType: "FULL_OBJECT",
     ContentType: "video/mp4",
     ContentDisposition: `attachment; filename="${fileName}"`,
   });
@@ -60,9 +62,10 @@ const parts: CompletedPart[] = [];
       Bucket: bucket,
       Key: key,
       UploadId: uploadId,
-      // ChecksumAlgorithm: checksumAlgorithm,
       PartNumber: partNumber,
       Body: chunk,
+      // Only needed if you wanted to perform COMPOSITE checksum check.
+      // ChecksumAlgorithm: checksumAlgorithm,
       // ChecksumCRC32: chunkChecksum,
     });
     const response = await client.send(uploadPartCommand);
@@ -72,8 +75,8 @@ const parts: CompletedPart[] = [];
     parts.push({
       PartNumber: partNumber++,
       ETag: response.ETag,
-      // And if I do not add the following, when I try to complete the upload AWS S3 will throw InvalidPart error at me!
-      // And when I do add it, AWS will calculate a composite checksum!!!!
+      // And if I do not add the following, when I try to complete the upload Minio will throw InvalidPart error at me!
+      // And when I do add it, Minio will calculate a composite checksum!!!!
       // ChecksumCRC32: response.ChecksumCRC32,
     });
   }
@@ -85,8 +88,8 @@ const parts: CompletedPart[] = [];
     Key: key,
     UploadId: uploadId,
     MultipartUpload: { Parts: parts },
-    ChecksumType: "FULL_OBJECT", // if I uncomment these two AWS S3 will throw an error at me!
-    ChecksumCRC32: checksum, // if I uncomment these two AWS S3 will throw an error at me!
+    ChecksumType: "FULL_OBJECT",
+    ChecksumCRC32: checksum,
   });
   const response = await client.send(command);
 
