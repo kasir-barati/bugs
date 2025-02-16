@@ -18,9 +18,12 @@ const fileName = "upload-me.mp4";
 const checksumAlgorithm = ChecksumAlgorithm.CRC32;
 const client = new S3Client({
   region: "eu",
-  credentials: { accessKeyId: "adminadmin", secretAccessKey: "adminadmin" },
-  endpoint: "http://localhost:9000",
-  forcePathStyle: true,
+  credentials: {
+    accessKeyId: "aws",
+    secretAccessKey: "aws",
+  },
+  // endpoint: "http://localhost:9000",
+  // forcePathStyle: true,
 });
 const parts: CompletedPart[] = [];
 
@@ -83,7 +86,7 @@ const parts: CompletedPart[] = [];
     UploadId: uploadId,
     MultipartUpload: { Parts: parts },
     ChecksumType: "FULL_OBJECT", // if I uncomment these two AWS S3 will throw an error at me!
-    // ChecksumCRC32: checksum, if I uncomment these two AWS S3 will throw an error at me!
+    ChecksumCRC32: checksum, // if I uncomment these two AWS S3 will throw an error at me!
   });
   const response = await client.send(command);
 
