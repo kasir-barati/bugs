@@ -34,8 +34,8 @@ const parts: CompletedPart[] = [];
   const createMultiPartUploadCommand = new CreateMultipartUploadCommand({
     Bucket: bucket,
     Key: key,
-    ChecksumAlgorithm: checksumAlgorithm,
-    // ChecksumType: "FULL_OBJECT", Does not change anything if I choose FULL_OBJECT or COMPOSITE!
+    ChecksumAlgorithm: checksumAlgorithm, // If I comment this it will skip the whole checksum check all together!
+    ChecksumType: "FULL_OBJECT", // Does not change anything if I choose FULL_OBJECT or COMPOSITE!
     ContentType: "video/mp4",
     ContentDisposition: `attachment; filename="${fileName}"`,
   });
@@ -57,26 +57,32 @@ const parts: CompletedPart[] = [];
       Bucket: bucket,
       Key: key,
       UploadId: uploadId,
-      ChecksumAlgorithm: checksumAlgorithm,
+      // ChecksumAlgorithm: checksumAlgorithm,
       PartNumber: partNumber,
       Body: chunk,
       // ChecksumCRC32: chunkChecksum,
     });
     const response = await client.send(uploadPartCommand);
 
+    console.log(response); // This line logs: { '$metadata': { ... }, ETag: '"21a2d7...1354f"', ChecksumCRC32: 'gp8EGg==' }
+
     parts.push({
       PartNumber: partNumber++,
       ETag: response.ETag,
-      ChecksumCRC32: response.ChecksumCRC32,
+      // And if I do not add the following, when I try to complete the upload AWS S3 will throw InvalidPart error at me!
+      // And when I do add it, AWS will calculate a composite checksum!!!!
+      // ChecksumCRC32: response.ChecksumCRC32,
     });
   }
+
+  console.log("Parts: ", parts);
 
   const command = new CompleteMultipartUploadCommand({
     Bucket: bucket,
     Key: key,
     UploadId: uploadId,
     MultipartUpload: { Parts: parts },
-    // ChecksumType: "FULL_OBJECT", if I uncomment these two AWS S3 will throw an error at me!
+    ChecksumType: "FULL_OBJECT", // if I uncomment these two AWS S3 will throw an error at me!
     // ChecksumCRC32: checksum, if I uncomment these two AWS S3 will throw an error at me!
   });
   const response = await client.send(command);
