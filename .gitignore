@@ -1,3 +1,4 @@
 dist
 node_modules
 upload-me.mp4
+minio_audit_logs

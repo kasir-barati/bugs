@@ -2,13 +2,32 @@ services:
   minio:
     image: minio/minio
     ports:
-      - 9000:9000
-      - 9001:9001
+      - 9000:9000 # API
+      - 9001:9001 # console
     volumes:
       - minio:/data
     env_file:
       - .env
-    command: server --console-address ":9001" /data
+    command: server /data --console-address ":9001" --address ":9000"
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+
+  create-buckets:
+    image: minio/mc
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set my_minio http://minio:9000 adminadmin adminadmin;
+      /usr/bin/mc admin info my_minio;
+      /usr/bin/mc mb my_minio/test;
+      /usr/bin/mc admin trace --verbose my_minio;
+      exit 0;
+      "
 
 volumes:
   minio:

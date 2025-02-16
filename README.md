@@ -106,8 +106,7 @@ InvalidPart: One or more of the specified parts could not be found.  The part ma
 2. Change the `fileName` to point to an absolute path.
    - **It should be bigger than 5MB**.
 3. `docker compose up -d`
-4. Create a bucket named "test".
-5. `pnpm start`.
+4. `pnpm start`.
 
 # How to Run the `simplified.ts`
 
@@ -115,5 +114,4 @@ InvalidPart: One or more of the specified parts could not be found.  The part ma
 2. Change the `fileName` to point to an absolute path.
    - **It should be bigger than 5MB**.
 3. `docker compose up -d`
-4. Create a bucket named "test".
-5. `pnpx simplified`.
+4. `pnpx simplified`.
