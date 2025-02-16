@@ -103,8 +103,8 @@ InvalidPart: One or more of the specified parts could not be found.  The part ma
 # How to Run the `main.ts`
 
 1. `pnpm install --frozen-lockfile`
-2. Change the `fileName` to point to an absolute file.
-   - It should be bigger than 5MB.
+2. Change the `fileName` to point to an absolute path.
+   - **It should be bigger than 5MB**.
 3. `docker compose up -d`
 4. Create a bucket named "test".
 5. `pnpm start`.
@@ -112,8 +112,8 @@ InvalidPart: One or more of the specified parts could not be found.  The part ma
 # How to Run the `simplified.ts`
 
 1. `pnpm install --frozen-lockfile`
-2. Change the `fileName` to point to an absolute file.
-   - It should be bigger than 5MB.
+2. Change the `fileName` to point to an absolute path.
+   - **It should be bigger than 5MB**.
 3. `docker compose up -d`
 4. Create a bucket named "test".
 5. `pnpx simplified`.
