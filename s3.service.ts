@@ -87,6 +87,8 @@ export class S3Service {
       Key: key,
       UploadId: uploadId,
       ChecksumType: "FULL_OBJECT",
+      ...(algorithm === "SHA1" && { ChecksumSHA1: checksum }),
+      ...(algorithm === "SHA256" && { ChecksumSHA256: checksum }),
       ...(algorithm === "CRC32" && { ChecksumCRC32: checksum }),
       ...(algorithm === "CRC32C" && { ChecksumCRC32C: checksum }),
       ...(algorithm === "CRC64NVME" && { ChecksumCRC64NVME: checksum }),

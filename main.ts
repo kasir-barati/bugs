@@ -81,6 +81,12 @@ export class FileUploaderService {
     }
 
     const partChecksum = {
+      ...(result.ChecksumSHA1 && {
+        ChecksumSHA1: result.ChecksumSHA1,
+      }),
+      ...(result.ChecksumSHA256 && {
+        ChecksumSHA256: result.ChecksumSHA256,
+      }),
       ...(result.ChecksumCRC32 && {
         ChecksumCRC32: result.ChecksumCRC32,
       }),
