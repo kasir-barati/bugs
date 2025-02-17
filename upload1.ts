@@ -1,8 +1,13 @@
 import { Upload } from "@aws-sdk/lib-storage";
 import {
   ChecksumAlgorithm,
+  CompleteMultipartUploadCommandInput,
+  CreateMultipartUploadCommand,
+  CreateMultipartUploadCommandInput,
   GetObjectAttributesCommand,
   S3Client,
+  UploadPartCommand,
+  UploadPartCommandInput,
 } from "@aws-sdk/client-s3";
 import { randomUUID } from "crypto";
 import { createReadStream } from "fs";
@@ -15,17 +20,45 @@ let checksum: string | undefined;
 const client = new S3Client({
   region: "eu",
   credentials: {
-    accessKeyId: "key",
-    secretAccessKey: "secret",
+    accessKeyId: "adminadmin",
+    secretAccessKey: "adminadmin",
   },
   // logger: console,
+  // Just needed in Minio
+  endpoint: "http://localhost:9000",
+  forcePathStyle: true,
 });
 const Key = randomUUID();
 const fileName = "upload-me.mp4";
-const Bucket = "test-checksum-mjb";
+const Bucket = "test";
 const checksumAlgorithm = ChecksumAlgorithm.CRC32;
 
+client.middlewareStack.use({
+  applyToStack: (stack) => {
+    stack.add(
+      (next) => async (args) => {
+        const checksumAlgorithm = (
+          args.input as CreateMultipartUploadCommandInput
+        )?.ChecksumAlgorithm;
+
+        if ("PartNumber" in args.input) {
+          delete (args.input as UploadPartCommandInput).ChecksumAlgorithm;
+          delete (args.input as any)["Checksum" + checksumAlgorithm];
+        }
+        (args.input as CreateMultipartUploadCommandInput).ChecksumType =
+          "FULL_OBJECT";
+
+        return next(args);
+      },
+      { step: "initialize" }
+    );
+  },
+});
+
 async function uploadMe(passThroughStream: PassThrough) {
+  const fileContent = await readFile(fileName);
+  checksum = generateChecksum(fileContent, checksumAlgorithm);
+
   try {
     const upload = new Upload({
       client,
@@ -35,6 +68,7 @@ async function uploadMe(passThroughStream: PassThrough) {
         Body: passThroughStream,
         Key,
         ChecksumAlgorithm: checksumAlgorithm,
+        ChecksumCRC32: checksum,
       },
     });
 
@@ -52,9 +86,6 @@ async function uploadMe(passThroughStream: PassThrough) {
   const chunkSize = 1024;
   const readStream = createReadStream(fileName, { highWaterMark: chunkSize });
   let passThroughStream = new PassThrough();
-  const fileContent = await readFile(fileName);
-
-  checksum = generateChecksum(fileContent, checksumAlgorithm);
 
   passThroughStream = readStream.pipe(passThroughStream);
 
