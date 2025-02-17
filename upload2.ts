@@ -8,6 +8,7 @@ import { randomUUID } from "crypto";
 import { createReadStream } from "fs";
 import { PassThrough } from "stream";
 import { generateChecksum } from "./generate-checksum";
+import { stat } from "fs/promises";
 
 let uploadId: string | undefined;
 let checksum = "";
@@ -49,15 +50,19 @@ async function uploadMe(passThroughStream: PassThrough) {
 }
 
 (async () => {
+  const { size: fileSize } = await stat(fileName);
   const readStream = createReadStream(fileName, { highWaterMark: chunkSize });
   let passThroughStream = new PassThrough();
   let size = 0;
 
+  console.log(fileSize);
+
   readStream
     .on("data", (chunk) => {
-      size += chunkSize;
+      size += chunk.length;
 
-      if (is5Mb(size)) {
+      if (size === 7549557 || size === 2306677) {
+        console.log(size);
         checksum += generateChecksum(chunk, checksumAlgorithm);
       }
     })
@@ -92,6 +97,25 @@ async function uploadMe(passThroughStream: PassThrough) {
   console.error(error);
 });
 
-function is5Mb(size: number) {
-  return size === chunkSize * 5;
+/**
+
+7549557
+7549557
+{
+  loaded: 2306677,
+  total: undefined,
+  part: 2,
+  Key: '20a040fc-1933-428c-8d2f-c81f86632eb6',
+  Bucket: 'test-checksum-mjb'
 }
+{
+  loaded: 7549557,
+  total: undefined,
+  part: 1,
+  Key: '20a040fc-1933-428c-8d2f-c81f86632eb6',
+  Bucket: 'test-checksum-mjb'
+}
+nB0LRA==
+{ ChecksumCRC32: 'nz0A4Q==', ChecksumType: 'COMPOSITE' }
+لg
+ */
