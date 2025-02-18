@@ -7,7 +7,7 @@ import { randomUUID } from "crypto";
 import { createReadStream } from "fs";
 import { PassThrough } from "stream";
 import { generateChecksum } from "./generate-checksum";
-import { readFile, stat } from "fs/promises";
+import { readFile } from "fs/promises";
 import { Upload } from "./upload/upload";
 
 let uploadId: string | undefined;
@@ -46,7 +46,6 @@ function uploadMe(passThroughStream: PassThrough) {
 }
 
 (async () => {
-  const { size: fileSize } = await stat(fileName);
   const readStream = createReadStream(fileName, { highWaterMark: chunkSize });
   const fileContent = await readFile("upload-me.mp4");
   let passThroughStream = new PassThrough();
