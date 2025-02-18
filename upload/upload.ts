@@ -50,7 +50,7 @@ export class Upload extends EventEmitter {
   private readonly tags: Tag[] = [];
 
   private readonly client: S3Client;
-  private readonly params: PutObjectCommandInput;
+  private readonly params: Options["params"];
 
   // used for reporting progress.
   private totalBytes?: number;
@@ -123,6 +123,15 @@ export class Upload extends EventEmitter {
   ): this {
     this.uploadEvent = event;
     return super.on(event, listener);
+  }
+
+  public once(
+    event: "beforeCompleteMultipartUploadCommand",
+    listener: (params: Options["params"]) => void
+  ): this {
+    this.uploadEvent = event;
+
+    return super.once(event, listener);
   }
 
   private async __uploadUsingPut(dataPart: RawDataPart): Promise<void> {
@@ -308,9 +317,25 @@ export class Upload extends EventEmitter {
 
       this.uploadEnqueuedPartsCount += 1;
 
+      let rest = this.params;
+
+      if (this.params.ChecksumType === "FULL_OBJECT") {
+        const {
+          ChecksumAlgorithm,
+          ChecksumCRC32,
+          ChecksumCRC32C,
+          ChecksumCRC64NVME,
+          ChecksumSHA1,
+          ChecksumSHA256,
+          ...restWithoutChecksumsAndAlgorithm
+        } = this.params;
+
+        rest = restWithoutChecksumsAndAlgorithm;
+      }
+
       const partResult = await this.client.send(
         new UploadPartCommand({
-          ...this.params,
+          ...rest,
           // dataPart.data is chunked into a non-streaming buffer
           // so the ContentLength from the input should not be used for MPU.
           ContentLength: undefined,
@@ -400,8 +425,11 @@ export class Upload extends EventEmitter {
 
     let result;
     if (this.isMultiPart) {
+      this.__notifyBeforeCompleteMultipartUpload();
+
       this.uploadedParts.sort((a, b) => a.PartNumber! - b.PartNumber!);
 
+      // TODO: add support for pre-calculated checksums in composite
       const uploadCompleteParams = {
         ...this.params,
         Body: undefined,
@@ -459,6 +487,12 @@ export class Upload extends EventEmitter {
   private __notifyProgress(progress: Progress): void {
     if (this.uploadEvent) {
       this.emit(this.uploadEvent, progress);
+    }
+  }
+
+  private __notifyBeforeCompleteMultipartUpload(): void {
+    if (this.uploadEvent) {
+      this.emit(this.uploadEvent, this.params);
     }
   }
 

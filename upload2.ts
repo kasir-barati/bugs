@@ -1,4 +1,3 @@
-import { Upload } from "@aws-sdk/lib-storage";
 import {
   ChecksumAlgorithm,
   GetObjectAttributesCommand,
@@ -8,71 +7,73 @@ import { randomUUID } from "crypto";
 import { createReadStream } from "fs";
 import { PassThrough } from "stream";
 import { generateChecksum } from "./generate-checksum";
-import { stat } from "fs/promises";
+import { readFile, stat } from "fs/promises";
+import { Upload } from "./upload/upload";
 
 let uploadId: string | undefined;
 let checksum = "";
 const client = new S3Client({
   region: "eu",
   credentials: {
-    accessKeyId: "key",
-    secretAccessKey: "secret",
+    accessKeyId: "adminadmin",
+    secretAccessKey: "adminadmin",
   },
   // logger: console,
+  // Just needed in Minio
+  endpoint: "http://localhost:9000",
+  forcePathStyle: true,
 });
 const Key = randomUUID();
 const fileName = "upload-me.mp4";
-const Bucket = "test-checksum-mjb";
+const Bucket = "test";
 const checksumAlgorithm = ChecksumAlgorithm.CRC32;
 const chunkSize = 1024 * 1024;
 
-async function uploadMe(passThroughStream: PassThrough) {
-  try {
-    const upload = new Upload({
-      client,
-      leavePartsOnError: false,
-      params: {
-        Bucket,
-        Body: passThroughStream,
-        Key,
-        ChecksumAlgorithm: checksumAlgorithm,
-      },
-    });
+function uploadMe(passThroughStream: PassThrough) {
+  const upload = new Upload({
+    client,
+    leavePartsOnError: false,
+    params: {
+      Bucket,
+      Body: passThroughStream,
+      Key,
+      ChecksumAlgorithm: checksumAlgorithm,
+      ChecksumType: "FULL_OBJECT",
+    },
+  });
 
-    upload.on("httpUploadProgress", console.log);
-
-    uploadId = upload.uploadId;
-
-    await upload.done();
-  } catch (e) {
-    console.log(e);
-  }
+  return upload;
 }
 
 (async () => {
   const { size: fileSize } = await stat(fileName);
   const readStream = createReadStream(fileName, { highWaterMark: chunkSize });
+  const fileContent = await readFile("upload-me.mp4");
   let passThroughStream = new PassThrough();
   let size = 0;
 
-  console.log(fileSize);
+  passThroughStream = readStream.pipe(passThroughStream);
+
+  const upload = uploadMe(passThroughStream);
 
   readStream
     .on("data", (chunk) => {
       size += chunk.length;
 
-      if (size === 7549557 || size === 2306677) {
-        console.log(size);
-        checksum += generateChecksum(chunk, checksumAlgorithm);
+      if (size > 7000000) {
+        checksum = generateChecksum(fileContent, checksumAlgorithm);
       }
     })
     .on("end", () => {
-      checksum = generateChecksum(checksum, checksumAlgorithm);
+      console.log("DONE");
     });
 
-  passThroughStream = readStream.pipe(passThroughStream);
-
-  await uploadMe(passThroughStream);
+  await upload
+    .on("httpUploadProgress", console.log)
+    .once("beforeCompleteMultipartUploadCommand", (params) => {
+      params.ChecksumCRC32 = checksum;
+    })
+    .done();
 
   const file = await client.send(
     new GetObjectAttributesCommand({
