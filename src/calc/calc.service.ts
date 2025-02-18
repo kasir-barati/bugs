@@ -9,6 +9,8 @@ export class CalcService {
     console.log('Initialize counter...');
     const counter = new Dummy();
 
+    subject.next({ result: 0 });
+
     request
       .pipe(
         map((data) => {
