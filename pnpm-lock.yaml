@@ -18,8 +18,8 @@ importers:
         specifier: ^11.0.1
         version: 11.0.20(@nestjs/common@11.0.20(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.20)
       nestjs-backend-common:
-        specifier: ^0.0.4
-        version: 0.0.4(@nestjs/platform-express@11.0.20)(graphql@16.10.0)(reflect-metadata@0.2.2)
+        specifier: ^0.0.5
+        version: 0.0.5(@nestjs/platform-express@11.0.20)(graphql@16.10.0)(nestjs-cls@5.4.3(@nestjs/common@11.0.20(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.20)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)
       nestjs-cls:
         specifier: ^5.4.3
         version: 5.4.3(@nestjs/common@11.0.20(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.20)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -2632,8 +2632,11 @@ packages:
   neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
 
-  nestjs-backend-common@0.0.4:
-    resolution: {integrity: sha512-UvHYnPHJuiVXZCcRPqZRqZCdH95KEPMOsE2yee8sD3VhKJ9nvqDCDXO6j8LGSao2Xrx3IwdJefzmFL8rknsj5g==}
+  nestjs-backend-common@0.0.5:
+    resolution: {integrity: sha512-Rxka8GyhjxAWVurs6aPkaiUsRb2JCr5GZISYUXeZYzKTg8f9wjx1pLVdqrZ2hUycLoeN8arg0h7t6b4+yVFDXw==}
+    peerDependencies:
+      nestjs-cls: ^5.4.3
+      reflect-metadata: ^0.2.2
 
   nestjs-cls@5.4.3:
     resolution: {integrity: sha512-yHEHyVoe6rsvj3XRPFonBKPXPjDREyHfKZ9PTStSLJTZAV3wey1Q89TquSj6QciqXB5387GiHv9DG+ja6iAUHw==}
@@ -6397,12 +6400,13 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  nestjs-backend-common@0.0.4(@nestjs/platform-express@11.0.20)(graphql@16.10.0)(reflect-metadata@0.2.2):
+  nestjs-backend-common@0.0.5(@nestjs/platform-express@11.0.20)(graphql@16.10.0)(nestjs-cls@5.4.3(@nestjs/common@11.0.20(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.20)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2):
     dependencies:
       '@nestjs/common': 11.0.20(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.0.20(@nestjs/common@11.0.20(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.0.20)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/graphql': 13.1.0(@nestjs/common@11.0.20(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.20)(graphql@16.10.0)(reflect-metadata@0.2.2)
       nestjs-cls: 5.4.3(@nestjs/common@11.0.20(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.0.20)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      reflect-metadata: 0.2.2
       rxjs: 7.8.2
     transitivePeerDependencies:
       - '@apollo/subgraph'
@@ -6414,7 +6418,6 @@ snapshots:
       - class-transformer
       - class-validator
       - graphql
-      - reflect-metadata
       - supports-color
       - ts-morph
       - uWebSockets.js
