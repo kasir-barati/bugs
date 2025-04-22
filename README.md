@@ -19,3 +19,5 @@
     at Object.mergeInternals (/tmp/test/node_modules/.pnpm/rxjs@7.8.2/node_modules/rxjs/src/internal/operators/mergeInternals.ts:136:10)
     at <anonymous> (/tmp/test/node_modules/.pnpm/rxjs@7.8.2/node_modules/rxjs/src/internal/operators/mergeMap.ts:93:42)
 ```
+
+The missing part was `"emitDecoratorMetadata": true` config in my `nestjs-backend-common` library ([ref](https://github.com/Papooch/nestjs-cls/discussions/240#discussioncomment-12906169)).
