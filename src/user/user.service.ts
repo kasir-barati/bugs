@@ -10,15 +10,12 @@ export class UserService implements OnModuleInit {
   constructor(
     @InjectQueue('audio') private audioQueue: Queue,
     @InjectModel(User.name) private userModel: Model<UserDocument>,
-  ) {
-    this.onModuleInit().catch(console.error);
-  }
+  ) {}
 
   async onModuleInit() {
     console.log('onModuleInit');
 
     const user = await this.userModel.create({
-      name: 'test',
       address: { street: 'test' },
     });
 

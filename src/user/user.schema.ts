@@ -12,8 +12,8 @@ export const AddressSchema = SchemaFactory.createForClass(Address);
 export type UserDocument = HydratedDocument<User>;
 @Schema()
 export class User {
-  @Prop()
-  name: string;
+  @Prop({ type: String, default: null })
+  name: string | null;
 
   @Prop(AddressSchema)
   address: Address;
