@@ -16,16 +16,6 @@ export class AppGrpcController {
   constructor(private readonly appService: AppService) {}
 
   // FIXME: this does not work without having GrpcStreamMethod decorator, but why?
-  // upload(
-  //   @Payload() dto: Observable<ChunkDto>,
-  //   @CurrentUser() user: User,
-  // ): Observable<UploadResponse> {
-  //   console.log(`Hi, ${user?.id} is in controller`);
-  //   const subject = new ReplaySubject<UploadResponse>(1);
-  //   this.appService.upload(subject, dto);
-  //   return subject.asObservable();
-  // }
-
   @GrpcStreamMethod()
   upload(
     @Payload() dto: Observable<ChunkDto>,
