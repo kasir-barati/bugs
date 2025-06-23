@@ -1,4 +1,4 @@
-import { Controller, Logger } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { AppService } from './app.service';
 import {
   FileUploadServiceControllerMethods,
@@ -7,25 +7,31 @@ import {
 import { Observable, ReplaySubject } from 'rxjs';
 import { ChunkDto } from './chunk.dto';
 import { GrpcStreamMethod, Payload } from '@nestjs/microservices';
+import { CurrentUser } from './current-user.decorator';
+import { User } from './app.type';
 
 @Controller()
 @FileUploadServiceControllerMethods()
 export class AppGrpcController {
-  private readonly logger = new Logger(AppGrpcController.name);
-
   constructor(private readonly appService: AppService) {}
 
   // FIXME: this does not work without having GrpcStreamMethod decorator, but why?
-  // upload(@Payload() dto: Observable<ChunkDto>): Observable<UploadResponse> {
-  //   this.logger.log("Hi, I'm in controller");
+  // upload(
+  //   @Payload() dto: Observable<ChunkDto>,
+  //   @CurrentUser() user: User,
+  // ): Observable<UploadResponse> {
+  //   console.log(`Hi, ${user?.id} is in controller`);
   //   const subject = new ReplaySubject<UploadResponse>(1);
   //   this.appService.upload(subject, dto);
   //   return subject.asObservable();
   // }
 
   @GrpcStreamMethod()
-  upload(@Payload() dto: Observable<ChunkDto>): Observable<UploadResponse> {
-    this.logger.log("Hi, I'm in controller");
+  upload(
+    @Payload() dto: Observable<ChunkDto>,
+    @CurrentUser() user: User,
+  ): Observable<UploadResponse> {
+    console.log(`Hi, ${user?.id} is in controller`);
     const subject = new ReplaySubject<UploadResponse>(1);
     this.appService.upload(subject, dto);
     return subject.asObservable();
