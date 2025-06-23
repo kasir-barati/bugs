@@ -1,6 +1,6 @@
 # Bugs
 
-So in NestJS when we have a duplex stream in gRPC we cannot use `@Payload` decorator for some reasons. I added plenty logs to show that the complete handler is not being called while my e2e test is calling `end` method of the returned duplex stream.
+So in NestJS when we have a duplex stream in gRPC we have to use `@GrpcStreamMethod` decorator for some reasons. I added plenty logs to show that the complete handler is not being called while my e2e test is calling `end` method of the returned duplex stream.
 
 ```bash
 $ pnpm test:e2e
