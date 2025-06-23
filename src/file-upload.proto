@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package File;
+
+service FileUploadService {
+  rpc Upload(stream Chunk) returns (stream UploadResponse) {}
+}
+
+message Chunk {
+  optional string filename = 1;
+  bytes data = 2;
+}
+
+message UploadResponse {
+}
