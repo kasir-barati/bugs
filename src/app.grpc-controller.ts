@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import {
   FileUploadServiceControllerMethods,
@@ -9,9 +9,11 @@ import { ChunkDto } from './chunk.dto';
 import { GrpcStreamMethod, Payload } from '@nestjs/microservices';
 import { CurrentUser } from './current-user.decorator';
 import { User } from './app.type';
+import { AuthGuard } from './auth.guard';
 
 @Controller()
 @FileUploadServiceControllerMethods()
+@UseGuards(AuthGuard)
 export class AppGrpcController {
   constructor(private readonly appService: AppService) {}
 
