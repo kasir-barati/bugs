@@ -80,7 +80,10 @@ describe('AppController (e2e)', () => {
         data: new Uint8Array(),
         filename: 'some.txt',
       } as Chunk);
-      duplexStream.end();
+
+      setTimeout(() => {
+        duplexStream.end();
+      }, 500);
     });
 
     // Assert
