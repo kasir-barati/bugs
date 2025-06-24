@@ -51,4 +51,5 @@ Jest did not exit one second after the test run has completed.
 ## Reproduce
 
 1. `pnpm install --frozen-lockfile`.
-2. `pnpm test:e2e`.
+2. `pnpm  grpc:gen`.
+3. `pnpm test:e2e`.
