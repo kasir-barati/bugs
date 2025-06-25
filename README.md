@@ -1,3 +1,7 @@
+> [!TIP]
+>
+> To use `GrpcStreamMethod`, process the parameters in the order described in the [documentation](https://docs.nestjs.com/microservices/grpc#subject-strategy). The documentation also mentions the parameter order, saying that you can only get metadata in the 2nd argument.
+
 # Bugs
 
 So in NestJS when we have a duplex stream in gRPC we have to use `@GrpcStreamMethod` decorator for some reasons. I added plenty logs to show that the complete handler is not being called while my e2e test is calling `end` method of the returned duplex stream.
