@@ -1,0 +1,1 @@
+export const TEST_MODULE_OPTIONS = Symbol('TEST_MODULE_OPTIONS');
