@@ -1,3 +1,7 @@
+> [!TIP]
+>
+> We encounter this issue since the `TestModuleConfig` ain't injectable. We need to annotate it with the `@Injectable` decorator.
+
 # Bug
 
 1. `pnpm install --frozen-lockfile`
