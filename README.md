@@ -1,3 +1,8 @@
+> [!TIP]
+>
+> 1. Uploading same file with the same object key results in an override. So basically the old object will be overwritten.
+> 2. Copy object will also override the old objects with the same key.
+
 # Stackoverflow Q&A
 
 https://stackoverflow.com/questions/79440191/invalid-checksum-when-using-multipart-upload-with-full-object-checksum-in-nodejs?noredirect=1#comment140099479_79440191
@@ -115,6 +120,8 @@ InvalidPart: One or more of the specified parts could not be found.  The part ma
 4. `pnpm start`.
 
 # How to Run the `simplified.ts`
+
+This one will not work, if you just need to upload something in Minio try to use `pnpx ts-node upload1.ts`.
 
 1. `pnpm install --frozen-lockfile`
 2. Change the `fileName` to point to an absolute path.
