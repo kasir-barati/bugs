@@ -98,4 +98,24 @@ async function testWithDrain() {
   memoryLogger();
 }
 
+/** @description NO memory issue! */
+async function worksWhenWeAreNotUsingPassThrough() {
+  await generateLargeFile(filename, 250);
+  const fileStream: ReadStream = createReadStream(filePath, {
+    highWaterMark: 1024,
+  });
+  const upload = new Upload({
+    client,
+    params: { Bucket: bucket, Key: key, Body: fileStream },
+  });
+
+  console.log("Before done!");
+  memoryLogger();
+
+  await upload.done();
+
+  console.log("After done!");
+  memoryLogger();
+}
+
 void testWithDrain();
