@@ -43,9 +43,49 @@ async function test() {
     client,
     params: { Bucket: bucket, Key: key, Body: stream },
   });
+  let counter = 0;
 
   for await (const data of fileStream) {
+    console.log("Iteration: " + ++counter);
     stream.write(data);
+  }
+
+  // You will never see these logs!
+
+  console.log("Before done!");
+  memoryLogger();
+
+  await upload.done();
+
+  console.log("After done!");
+  memoryLogger();
+}
+
+/** @description This one actually is worse than the test function. It crashes on the very first iteration! */
+async function testWithDrain() {
+  await generateLargeFile(filename, 250);
+  const fileStream: ReadStream = createReadStream(filePath, {
+    highWaterMark: 1024,
+  });
+  const stream = new PassThrough();
+  const upload = new Upload({
+    client,
+    params: { Bucket: bucket, Key: key, Body: stream },
+  });
+  let counter = 0;
+
+  for await (const data of fileStream) {
+    console.log("Iteration: " + ++counter);
+    const shouldWaitForDrainEvent = stream.write(data);
+
+    if (!shouldWaitForDrainEvent) {
+      continue;
+    }
+
+    await new Promise<void>((resolve) => {
+      console.log("Draining...");
+      stream.on("drain", resolve);
+    });
   }
 
   // You will never see these logs!
