@@ -1,30 +1,22 @@
 {
   "name": "bugs",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "",
-  "module": "commonjs",
-  "main": "index.js",
+  "main": "main.ts",
   "scripts": {
-    "start": "docker compose up -d && ts-node main.ts",
-    "simplified": "docker compose up -d && ts-node simplified.ts"
+    "dev": "docker compose up -d && npm run start",
+    "start": "ts-node main.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.835.0",
-    "@aws-sdk/lib-storage": "^3.835.0",
-    "@smithy/middleware-endpoint": "^4.1.12",
-    "@smithy/protocol-http": "^5.1.2",
-    "@smithy/smithy-client": "^4.4.4",
-    "@smithy/types": "^4.3.1",
-    "aws-crt": "^1.27.3",
-    "class-validator": "^0.14.2",
-    "mime-types": "^3.0.1"
+    "@aws-sdk/client-s3": "^3.749.0",
+    "@aws-sdk/lib-storage": "^3.749.0"
   },
   "devDependencies": {
-    "@types/mime-types": "^3.0.1",
     "@types/node": "^24.0.4",
+    "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   }
