@@ -61,7 +61,6 @@ async function test() {
   memoryLogger();
 }
 
-/** @description This one actually is worse than the test function. It crashes on the very first iteration! */
 async function testWithDrain() {
   await generateLargeFile(filename, 250);
   const fileStream: ReadStream = createReadStream(filePath, {
