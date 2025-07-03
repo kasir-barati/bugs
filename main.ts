@@ -38,12 +38,16 @@ const bucket = "test";
   const fileStream: ReadStream = createReadStream(filePath);
   const stream = new PassThrough();
 
-  fileStream.pipe(stream);
+  // fileStream.pipe(stream);
 
   const upload = new Upload({
     client,
     params: { Bucket: bucket, Key: key, Body: stream },
   });
+
+  for await (const data of fileStream) {
+    stream.write(data);
+  }
 
   console.log("Before done!");
   memoryLogger();
