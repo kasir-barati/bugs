@@ -30,16 +30,15 @@ const client = new S3Client({
 });
 const key = randomUUID();
 const bucket = "test";
+const filename = "upload-me.mp4";
+const filePath = join(__dirname, filename);
 
-(async () => {
-  const filename = "upload-me.mp4";
+async function test() {
   await generateLargeFile(filename, 250);
-  const filePath = join(__dirname, filename);
-  const fileStream: ReadStream = createReadStream(filePath);
+  const fileStream: ReadStream = createReadStream(filePath, {
+    highWaterMark: 1024,
+  });
   const stream = new PassThrough();
-
-  // fileStream.pipe(stream);
-
   const upload = new Upload({
     client,
     params: { Bucket: bucket, Key: key, Body: stream },
@@ -49,6 +48,8 @@ const bucket = "test";
     stream.write(data);
   }
 
+  // You will never see these logs!
+
   console.log("Before done!");
   memoryLogger();
 
@@ -56,4 +57,6 @@ const bucket = "test";
 
   console.log("After done!");
   memoryLogger();
-})();
+}
+
+void test();
