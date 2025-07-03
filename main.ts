@@ -118,4 +118,27 @@ async function worksWhenWeAreNotUsingPassThrough() {
   memoryLogger();
 }
 
-void testWithDrain();
+async function callsDoneImmediately() {
+  await generateLargeFile(filename, 250);
+  const fileStream: ReadStream = createReadStream(filePath, {
+    highWaterMark: 1024,
+  });
+  const stream = new PassThrough();
+  new Upload({
+    client,
+    params: { Bucket: bucket, Key: key, Body: stream },
+  })
+    .done()
+    .then(console.log)
+    .catch(console.error);
+
+  for await (const data of fileStream) {
+    stream.write(data, "utf-8");
+  }
+
+  console.log("Waiting for 2 minutes...");
+  await new Promise<void>((resolve) => setTimeout(resolve, 2 * 60 * 1_000));
+  console.log("After wait!");
+}
+
+void callsDoneImmediately();
