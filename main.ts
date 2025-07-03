@@ -78,7 +78,7 @@ async function testWithDrain() {
     console.log("Iteration: " + ++counter);
     const shouldWaitForDrainEvent = stream.write(data);
 
-    if (!shouldWaitForDrainEvent) {
+    if (shouldWaitForDrainEvent) {
       continue;
     }
 
@@ -99,4 +99,4 @@ async function testWithDrain() {
   memoryLogger();
 }
 
-void test();
+void testWithDrain();
