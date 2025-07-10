@@ -2,10 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TestModule } from '../test';
 import { AppService } from './app.service';
-import {
-  getTestServiceGrpcClient,
-  TestModuleConfig,
-} from './configs/test-module.config';
+import { TestModuleConfig } from './configs/test-module.config';
 
 @Module({
   imports: [
@@ -16,7 +13,6 @@ import {
     TestModule.forRootAsync({
       useClass: TestModuleConfig,
       inject: [ConfigService],
-      TestServiceGrpcClient: getTestServiceGrpcClient(),
     }),
   ],
   providers: [AppService],

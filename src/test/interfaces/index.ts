@@ -11,18 +11,15 @@ export interface CommonOptionsForDynamicModules {
 
 interface SharedOptions {
   TestService?: Class<ITestService>;
-  TestServiceGrpcClient: ServiceClientConstructor;
 }
 
 export interface TestModuleOptions extends SharedOptions {
   testServiceGrpcUri: string;
   refreshIntervalMs: number;
+  TestServiceGrpcClient: ServiceClientConstructor;
 }
 
-export type CreateTestAsyncOptions = Omit<
-  TestModuleOptions,
-  'TestService' | 'TestServiceGrpcClient'
->;
+export type CreateTestAsyncOptions = Omit<TestModuleOptions, 'TestService'>;
 
 export interface TestModuleAsyncOptionsFactory {
   createTestModuleOptions():

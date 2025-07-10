@@ -1,10 +1,6 @@
 import { DynamicModule, Module, Provider } from '@nestjs/common';
 
-import {
-  TEST_GRPC_CLIENT,
-  TEST_MODULE_OPTIONS,
-  TEST_SERVICE,
-} from './constants';
+import { TEST_MODULE_OPTIONS, TEST_SERVICE } from './constants';
 import {
   CommonOptionsForDynamicModules,
   TestModuleAsyncOptions,
@@ -30,10 +26,6 @@ export class TestModule {
           provide: TEST_SERVICE,
           useClass: options?.TestService ?? TestService,
         },
-        {
-          provide: TEST_GRPC_CLIENT,
-          useClass: options.TestServiceGrpcClient,
-        },
       ],
       exports: [TEST_SERVICE],
     };
@@ -48,10 +40,7 @@ export class TestModule {
           provide: TEST_SERVICE,
           useClass: options?.TestService ?? TestService,
         },
-        {
-          provide: TEST_GRPC_CLIENT,
-          useClass: options.TestServiceGrpcClient,
-        },
+
         ...this.createAsyncProviders(options),
       ],
       imports: [...(Array.isArray(options.imports) ? options.imports : [])],

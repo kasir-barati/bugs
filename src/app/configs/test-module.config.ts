@@ -1,4 +1,3 @@
-import { ServiceClientConstructor } from '@grpc/grpc-js';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
@@ -23,25 +22,22 @@ export class TestModuleConfig implements TestModuleAsyncOptionsFactory {
     const refreshIntervalMs = Number(
       this.configService.get('REFRESH_INTERVAL_MS') ?? 60 * 1000,
     );
-    const testServiceGrpcUri = this.configService.getOrThrow(
-      'TEST_SERVICE_GRPC_ENDPOINT',
+    const testServiceGrpcUri =
+      this.configService.get('TEST_SERVICE_GRPC_ENDPOINT') ?? 'http://test';
+    const proto = loadProto({
+      includeDirs: [],
+      protoFilePath: join(process.cwd(), 'src', 'assets', 'test.proto'),
+    });
+    const TestServiceGrpcClient = getServiceClientClass(
+      proto,
+      TEST_SERVICE_NAME,
+      SOME_PKG_TEST_SERVICE_PACKAGE_NAME,
     );
 
     return {
       refreshIntervalMs,
       testServiceGrpcUri,
+      TestServiceGrpcClient,
     };
   }
-}
-
-export function getTestServiceGrpcClient(): ServiceClientConstructor {
-  const proto = loadProto({
-    includeDirs: [],
-    protoFilePath: join(process.cwd(), 'src', 'assets', 'test.proto'),
-  });
-  return getServiceClientClass(
-    proto,
-    TEST_SERVICE_NAME,
-    SOME_PKG_TEST_SERVICE_PACKAGE_NAME,
-  );
 }
