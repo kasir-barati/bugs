@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package some.pkg.test_service;
+
+
+service TestService {
+  rpc GetSomething (GetSomethingRequest) returns (GetSomethingResponse);
+}
+
+message GetSomethingRequest {
+}
+
+message GetSomethingResponse {
+  string whatever = 1;
+}
