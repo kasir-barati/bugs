@@ -25,6 +25,7 @@ export class MongoModule {
       module: MongoModule,
       imports: [
         ...(options.imports ?? []),
+        ...(options.global === true ? [] : [MongoModule]),
         MongooseModule.forRootAsync({
           useFactory: (
             mongoModuleOptions: MongoModuleOptions,
