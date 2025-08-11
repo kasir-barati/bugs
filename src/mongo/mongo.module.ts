@@ -20,10 +20,10 @@ import {
 } from './interfaces';
 import { IndexService } from './services/index.service';
 
-const logger = new Logger('MongoModule');
-
 @Module({})
 export class MongoModule {
+  private static readonly logger = new Logger(MongoModule.name);
+
   static registerAsync(options: MongoModuleAsyncOptions): DynamicModule {
     const asyncProviders = this.createAsyncProviders(options);
     const databaseOptionsModule = {
@@ -68,7 +68,7 @@ export class MongoModule {
               );
             }
 
-            logger.log(`Connecting to MongoDB at ${uri}`);
+            MongoModule.logger.log(`Connecting to MongoDB at ${uri}`);
 
             return {
               uri: uri.href,
