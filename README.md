@@ -1,3 +1,3 @@
-# Bugs repo
+# Bugs
 
-Checkout to different branch
+## Dynamic Module
