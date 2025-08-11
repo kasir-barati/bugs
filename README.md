@@ -1,5 +1,9 @@
 # Bugs
 
+- [Discord](https://discord.com/channels/520622812742811698/1404511434515419206/1404511434515419206).
+- [Reddit](https://www.reddit.com/r/nestjs/comments/1mnjri6/mongoose_dynamic_module/).
+- [Stackoverflow](https://stackoverflow.com/questions/79732340/generic-mongoose-dynamic-module-cannot-inject-options).
+
 Just install the deps:
 
 ```cmd
