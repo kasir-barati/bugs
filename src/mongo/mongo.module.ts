@@ -1,10 +1,4 @@
-import {
-  DynamicModule,
-  Global,
-  Logger,
-  Module,
-  Provider,
-} from '@nestjs/common';
+import { DynamicModule, Logger, Module, Provider } from '@nestjs/common';
 import {
   getConnectionToken,
   MongooseModule,
@@ -26,28 +20,12 @@ export class MongoModule {
 
   static registerAsync(options: MongoModuleAsyncOptions): DynamicModule {
     const asyncProviders = this.createAsyncProviders(options);
-    const databaseOptionsModule = {
-      module: MongoModule,
-      imports: [...(options.imports ?? [])],
-      providers: [...asyncProviders],
-      exports: [MONGO_MODULE_OPTIONS],
-    };
 
-    @Module({
-      imports: [databaseOptionsModule],
-      providers: [
-        {
-          provide: Symbol('CreateIndexOnBootstrapService'),
-          useFactory(connection: Connection) {
-            return new IndexService(connection);
-          },
-          inject: [getConnectionToken(options.connectionName)],
-        },
-      ],
-    })
-    class MyMongoModule {
-      static registerAsync(): DynamicModule {
-        return MongooseModule.forRootAsync({
+    return {
+      module: MongoModule,
+      imports: [
+        ...(options.imports ?? []),
+        MongooseModule.forRootAsync({
           useFactory: (
             mongoModuleOptions: MongoModuleOptions,
           ): MongooseModuleFactoryOptions => {
@@ -80,15 +58,20 @@ export class MongoModule {
           },
           inject: [MONGO_MODULE_OPTIONS],
           connectionName: options.connectionName,
-        });
-      }
-    }
-
-    if (options.global) {
-      Global()(MyMongoModule);
-    }
-
-    return MyMongoModule.registerAsync();
+        }),
+      ],
+      providers: [
+        ...asyncProviders,
+        {
+          provide: Symbol('CreateIndexOnBootstrapService'),
+          useFactory(connection: Connection) {
+            return new IndexService(connection);
+          },
+          inject: [getConnectionToken(options.connectionName)],
+        },
+      ],
+      exports: [MONGO_MODULE_OPTIONS],
+    };
   }
 
   private static createAsyncProviders(
