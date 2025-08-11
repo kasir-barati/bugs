@@ -1,5 +1,11 @@
 import { DynamicModule, ModuleMetadata, Type } from '@nestjs/common';
 
+export interface RegisterMongoModuleOptions
+  extends Pick<DynamicModule, 'global'>,
+    MongoModuleOptions {
+  connectionName?: string;
+}
+
 export interface MongoModuleOptions {
   serviceName: string;
   connectionConfigs: {
