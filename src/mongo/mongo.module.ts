@@ -4,7 +4,7 @@ import {
   Logger,
   Module,
 } from '@nestjs/common';
-import { MongooseModule, MongooseModuleFactoryOptions } from '@nestjs/mongoose';
+import { MongooseModule } from '@nestjs/mongoose';
 
 import { CommonDynamicModuleOptions, MongoModuleOptions } from './interfaces';
 
@@ -14,13 +14,10 @@ const {
   MODULE_OPTIONS_TOKEN: MONGO_MODULE_OPTIONS,
 } = new ConfigurableModuleBuilder<MongoModuleOptions>().build();
 
-export const {
-  ConfigurableModuleClass: TempModuleConfigurableModuleClass,
-  MODULE_OPTIONS_TOKEN: TEMP_TOKEN,
-  ASYNC_OPTIONS_TYPE: TEMP_ASYNC_OPTIONS_TYPE,
-} = new ConfigurableModuleBuilder().build();
+const { ConfigurableModuleClass: MongooseModuleConfigurableModuleClass } =
+  new ConfigurableModuleBuilder().build();
 
-export class TempModule extends TempModuleConfigurableModuleClass {}
+export class DynamicMongooseModule extends MongooseModuleConfigurableModuleClass {}
 
 @Module({})
 export class MongoModule extends ConfigurableModuleClass {
@@ -33,21 +30,10 @@ export class MongoModule extends ConfigurableModuleClass {
 
     module.imports ??= [];
     module.imports.push(
-      TempModule.registerAsync({
+      DynamicMongooseModule.registerAsync({
         useFactory: (mongoModuleOptions: MongoModuleOptions) => {
-          // But having mongoModuleOptions here does not help me with MongooseModule!
-          return;
-        },
-        inject: [MONGO_MODULE_OPTIONS],
-        provideInjectionTokensFrom: module.providers,
-      }),
-      MongooseModule.forRootAsync({
-        useFactory: (
-          mongoModuleOptions: MongoModuleOptions,
-        ): MongooseModuleFactoryOptions => {
           const { connectionConfigs, serviceName } = mongoModuleOptions;
           const uri = new URL(connectionConfigs.uri);
-
           if (connectionConfigs.alternativeDatabaseName) {
             uri.pathname = uri.pathname.replace(
               serviceName,
@@ -64,16 +50,18 @@ export class MongoModule extends ConfigurableModuleClass {
 
           MongoModule.logger.log(`Connecting to MongoDB at ${uri}`);
 
-          return {
-            uri: uri.href,
-            user: connectionConfigs.username,
-            pass: connectionConfigs.password,
-            tlsCAFile: connectionConfigs.tlsCaFile,
-            tls: connectionConfigs.isTlsEnabled ?? false,
-          };
+          module.imports!.push(
+            MongooseModule.forRoot(uri.href, {
+              user: connectionConfigs.username,
+              pass: connectionConfigs.password,
+              tlsCAFile: connectionConfigs.tlsCaFile,
+              tls: connectionConfigs.isTlsEnabled ?? false,
+              connectionName: options.connectionName,
+            }),
+          );
         },
         inject: [MONGO_MODULE_OPTIONS],
-        connectionName: options.connectionName,
+        provideInjectionTokensFrom: module.providers,
       }),
     );
 
