@@ -14,6 +14,14 @@ const {
   MODULE_OPTIONS_TOKEN: MONGO_MODULE_OPTIONS,
 } = new ConfigurableModuleBuilder<MongoModuleOptions>().build();
 
+export const {
+  ConfigurableModuleClass: TempModuleConfigurableModuleClass,
+  MODULE_OPTIONS_TOKEN: TEMP_TOKEN,
+  ASYNC_OPTIONS_TYPE: TEMP_ASYNC_OPTIONS_TYPE,
+} = new ConfigurableModuleBuilder().build();
+
+export class TempModule extends TempModuleConfigurableModuleClass {}
+
 @Module({})
 export class MongoModule extends ConfigurableModuleClass {
   private static readonly logger = new Logger(MongoModule.name);
@@ -25,6 +33,14 @@ export class MongoModule extends ConfigurableModuleClass {
 
     module.imports ??= [];
     module.imports.push(
+      TempModule.registerAsync({
+        useFactory: (mongoModuleOptions: MongoModuleOptions) => {
+          // But having mongoModuleOptions here does not help me with MongooseModule!
+          return;
+        },
+        inject: [MONGO_MODULE_OPTIONS],
+        provideInjectionTokensFrom: module.providers,
+      }),
       MongooseModule.forRootAsync({
         useFactory: (
           mongoModuleOptions: MongoModuleOptions,
