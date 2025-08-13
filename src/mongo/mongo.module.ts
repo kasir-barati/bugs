@@ -7,10 +7,12 @@ import {
 import { MongooseModule, MongooseModuleFactoryOptions } from '@nestjs/mongoose';
 
 import { CommonDynamicModuleOptions, MongoModuleOptions } from './interfaces';
-import { MONGO_MODULE_OPTIONS } from './mongo.module-definition.ts';
 
-const { ConfigurableModuleClass, ASYNC_OPTIONS_TYPE } =
-  new ConfigurableModuleBuilder().build();
+const {
+  ConfigurableModuleClass,
+  ASYNC_OPTIONS_TYPE,
+  MODULE_OPTIONS_TOKEN: MONGO_MODULE_OPTIONS,
+} = new ConfigurableModuleBuilder<MongoModuleOptions>().build();
 
 @Module({})
 export class MongoModule extends ConfigurableModuleClass {
