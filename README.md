@@ -12,6 +12,10 @@ pnpm i --frozen-lockfile
 
 ## Dynamic Module
 
+> [!NOTE]
+>
+> Solution: https://github.com/kasir-barati/bugs/blob/d489e2b9677af8cabc65db82617668d1c96e74fe/src/mongo/mongo.module.ts
+
 <details>
 <summary>The first try</summary>
 
