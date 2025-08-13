@@ -3,7 +3,7 @@ import { ConfigurableModuleOptionsFactory, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class Db1Config
-  implements ConfigurableModuleOptionsFactory<unknown, 'create'>
+  implements ConfigurableModuleOptionsFactory<MongoModuleOptions, 'create'>
 {
   create(): Promise<MongoModuleOptions> | MongoModuleOptions {
     return {
