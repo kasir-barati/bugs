@@ -2,6 +2,8 @@
 
 It seems like I have to manually install this hook on top of other hooks!
 
+https://github.com/compilerla/conventional-pre-commit/issues/145
+
 ## Reproduce It
 
 1. Clone the repo.
