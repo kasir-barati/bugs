@@ -1,15 +1,25 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
-import { MessageDto } from '../../app/dto/message.dto';
+import {
+  AmqpConnection,
+  RabbitSubscribe,
+} from '@golevelup/nestjs-rabbitmq';
+import { MessageDto } from '../../app';
+import {
+  RABBITMQ_EXCHANGE,
+  RABBITMQ_QUEUE,
+  RABBITMQ_ROUTING_KEY,
+} from './rabbitmq.constants';
 
 @Injectable()
 export class RabbitmqConsumer {
   private readonly logger = new Logger(RabbitmqConsumer.name);
 
+  constructor(private readonly amqpConnection: AmqpConnection) {}
+
   @RabbitSubscribe({
-    exchange: process.env.RABBITMQ_EXCHANGE || 'batch-exchange',
-    routingKey: process.env.RABBITMQ_ROUTING_KEY || 'batch.process',
-    queue: process.env.RABBITMQ_QUEUE || 'batch-processing-queue',
+    exchange: RABBITMQ_EXCHANGE,
+    routingKey: RABBITMQ_ROUTING_KEY,
+    queue: RABBITMQ_QUEUE,
     queueOptions: {
       durable: true,
     },
@@ -31,24 +41,47 @@ export class RabbitmqConsumer {
   })
   async handleMessage(message: MessageDto[]) {
     this.logger.log('=== Received Message ===');
-    this.logger.log(JSON.stringify(message, null, 2));
-    this.logger.log('========================');
 
-    if (
-      message.find(
-        ({ value }) =>
-          value?.userId === 7 ||
-          value?.userId === 27 ||
-          value?.userId === 57,
-      )
-    ) {
-      this.logger.error('Simulated processing error');
-      throw new Error('Simulated processing error');
+    for (const msg of message) {
+      try {
+        this.logger.log(JSON.stringify(msg, null, 2));
+
+        // README: Just for testing!
+        if (
+          msg.value?.userId === 0 ||
+          msg.value?.userId === 27 ||
+          msg.value?.userId === 57
+        ) {
+          this.logger.error('Simulated processing error');
+          throw new Error('Simulated processing error');
+        }
+
+        // README: Just for testing!
+        await sleep(Math.floor(Math.random() * 2) + 1); // Sleep for 1 to 2 minutes
+      } catch (error) {
+        // README: Just for testing!
+        const modifiedMessage = {
+          ...msg,
+          value: {
+            ...msg.value,
+            userId: msg.value?.userId + 1,
+          },
+        };
+
+        this.amqpConnection
+          .publish(
+            RABBITMQ_EXCHANGE,
+            RABBITMQ_ROUTING_KEY,
+            modifiedMessage,
+          )
+          .catch((error) => {
+            this.logger.error(
+              `Failed to requeue ${JSON.stringify(modifiedMessage)}: ${error.message}`,
+            );
+          });
+      }
     }
-
-    await sleep(Math.floor(Math.random() * 5) + 1); // Sleep for 1 to 5 minutes
-
-    return; // Acknowledge the message
+    this.logger.log('========================');
   }
 }
 

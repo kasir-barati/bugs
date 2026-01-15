@@ -1,7 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
-import { MessageDto } from '../../app/dto/message.dto';
 import axios from 'axios';
+import { MessageDto } from '../../app';
+import {
+  RABBITMQ_EXCHANGE,
+  RABBITMQ_MANAGEMENT_URL,
+  RABBITMQ_QUEUE,
+  RABBITMQ_ROUTING_KEY,
+} from './rabbitmq.constants';
 
 @Injectable()
 export class RabbitmqService {
@@ -10,19 +16,14 @@ export class RabbitmqService {
   constructor(private readonly amqpConnection: AmqpConnection) {}
 
   async publishMessage(message: MessageDto): Promise<void> {
-    const exchange =
-      process.env.RABBITMQ_EXCHANGE || 'batch-exchange';
-    const routingKey =
-      process.env.RABBITMQ_ROUTING_KEY || 'batch.process';
-
     try {
       await this.amqpConnection.publish(
-        exchange,
-        routingKey,
+        RABBITMQ_EXCHANGE,
+        RABBITMQ_ROUTING_KEY,
         message,
       );
       this.logger.log(
-        `Message published to exchange: ${exchange}, routing key: ${routingKey}`,
+        `Message published to exchange: ${RABBITMQ_EXCHANGE}, routing key: ${RABBITMQ_ROUTING_KEY}`,
       );
     } catch (error) {
       this.logger.error('Failed to publish message', error);
@@ -34,14 +35,9 @@ export class RabbitmqService {
     queue: string;
     messageCount: number;
   }> {
-    const queueName =
-      process.env.RABBITMQ_QUEUE || 'batch-processing-queue';
-    const managementUrl =
-      process.env.RABBITMQ_MANAGEMENT_URL || 'http://rabbitmq:15672';
-
     try {
       const response = await axios.get(
-        `${managementUrl}/api/queues/%2F/${queueName}`,
+        `${RABBITMQ_MANAGEMENT_URL}/api/queues/%2F/${RABBITMQ_QUEUE}`,
         {
           auth: {
             username: 'guest',
@@ -52,11 +48,11 @@ export class RabbitmqService {
 
       const messageCount = response.data.messages || 0;
       this.logger.log(
-        `Queue ${queueName} has ${messageCount} messages`,
+        `Queue ${RABBITMQ_QUEUE} has ${messageCount} messages`,
       );
 
       return {
-        queue: queueName,
+        queue: RABBITMQ_QUEUE,
         messageCount,
       };
     } catch (error) {
