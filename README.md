@@ -2,6 +2,10 @@
 
 A Dockerized NestJS application that demonstrates batch processing with RabbitMQ using topic exchange and durable queues.
 
+## My Issue
+
+[This](https://github.com/kasir-barati/bugs/blob/3b672b3335ff9f429546810ca126dc2d6108deb0/src/modules/rabbitmq/rabbitmq.consumer.ts#L29) will nack the batch wholesome, it does not care if we were able to process some of the messages!
+
 ## Getting Started
 
 1. ```bash
