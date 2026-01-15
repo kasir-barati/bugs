@@ -26,14 +26,14 @@ if __name__ == "__main__":
     for id in range(10):
         publish_event(id)
 
-    sleep(30)
+    # sleep(30)
 
-    print(f"Continue from 10-29")
-    for id in range(10, 30):
-        publish_event(id)
+    # print(f"Continue from 10-29")
+    # for id in range(10, 30):
+    #     publish_event(id)
 
-    sleep(30)
+    # sleep(30)
 
-    print(f"Continue from 30-59")
-    for id in range(30, 60):
-        publish_event(id)
+    # print(f"Continue from 30-59")
+    # for id in range(30, 60):
+    #     publish_event(id)
