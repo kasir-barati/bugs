@@ -1,4 +1,11 @@
-import { Controller, Post, Get, Body, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Body,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AppService } from './app.service';
 import { MessageDto } from './dto/message.dto';
@@ -18,18 +25,26 @@ export class AppController {
       type: 'object',
       properties: {
         success: { type: 'boolean', example: true },
-        message: { type: 'string', example: 'Message published successfully' },
+        message: {
+          type: 'string',
+          example: 'Message published successfully',
+        },
       },
     },
   })
-  @ApiResponse({ status: 400, description: 'Bad request - Invalid message format' })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request - Invalid message format',
+  })
   @ApiResponse({ status: 500, description: 'Internal server error' })
   async publishMessage(@Body() messageDto: MessageDto) {
     return this.appService.publishMessage(messageDto);
   }
 
   @Get('queue/count')
-  @ApiOperation({ summary: 'Get the current message count in the queue' })
+  @ApiOperation({
+    summary: 'Get the current message count in the queue',
+  })
   @ApiResponse({
     status: 200,
     description: 'Queue message count retrieved successfully',

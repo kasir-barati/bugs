@@ -1,5 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsObject, IsISO8601 } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsObject,
+  IsISO8601,
+} from 'class-validator';
 
 export class MessageDto {
   @ApiProperty({
@@ -12,7 +17,11 @@ export class MessageDto {
 
   @ApiProperty({
     description: 'Event payload with any structure',
-    example: { userId: 123, name: 'John Doe', email: 'john@example.com' },
+    example: {
+      userId: 123,
+      name: 'John Doe',
+      email: 'john@example.com',
+    },
   })
   @IsObject()
   @IsNotEmpty()

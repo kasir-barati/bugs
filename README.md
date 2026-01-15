@@ -64,6 +64,7 @@ docker-compose up --build
 Publishes a message to the RabbitMQ queue.
 
 **Request Body:**
+
 ```json
 {
   "event": "user.created",
@@ -76,6 +77,7 @@ Publishes a message to the RabbitMQ queue.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -90,6 +92,7 @@ Publishes a message to the RabbitMQ queue.
 Returns the current number of messages in the queue.
 
 **Response:**
+
 ```json
 {
   "queue": "batch-processing-queue",
@@ -129,6 +132,7 @@ Environment variables are configured in `docker-compose.yml`:
 ### Local Development (without Docker)
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
@@ -136,6 +140,7 @@ npm install
 2. Start RabbitMQ locally or update the connection URL
 
 3. Run the application:
+
 ```bash
 npm run start:dev
 ```
@@ -147,6 +152,7 @@ docker-compose down
 ```
 
 To remove volumes as well:
+
 ```bash
 docker-compose down -v
 ```
@@ -154,6 +160,7 @@ docker-compose down -v
 ## Future Enhancements
 
 The architecture is ready for batch processing implementation:
+
 - Collect messages over a time window
 - Process multiple messages together
 - Implement batch acknowledgment

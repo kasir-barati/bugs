@@ -15,7 +15,9 @@ import { RabbitMQConsumer } from './rabbitmq.consumer';
           },
         },
       ],
-      uri: process.env.RABBITMQ_URL || 'amqp://guest:guest@rabbitmq:5672',
+      uri:
+        process.env.RABBITMQ_URL ||
+        'amqp://guest:guest@rabbitmq:5672',
       connectionInitOptions: { wait: false, timeout: 30000 },
       enableControllerDiscovery: true,
     }),

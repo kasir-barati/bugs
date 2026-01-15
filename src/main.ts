@@ -18,7 +18,9 @@ async function bootstrap() {
   // Swagger configuration
   const config = new DocumentBuilder()
     .setTitle('Batch Processing API')
-    .setDescription('NestJS application with RabbitMQ batch processing')
+    .setDescription(
+      'NestJS application with RabbitMQ batch processing',
+    )
     .setVersion('1.0')
     .addTag('Batch Processing')
     .build();
@@ -28,9 +30,11 @@ async function bootstrap() {
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
-  
+
   console.log(`Application is running on: http://localhost:${port}`);
-  console.log(`Swagger UI is available at: http://localhost:${port}/api`);
+  console.log(
+    `Swagger UI is available at: http://localhost:${port}/api`,
+  );
 }
 
 bootstrap();
