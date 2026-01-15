@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { RabbitMQService } from './rabbitmq/rabbitmq.service';
-import { MessageDto } from './dto/message.dto';
+import { RabbitmqService } from '../modules';
+import { MessageDto } from './dto';
 
 @Injectable()
 export class AppService {
-  constructor(private readonly rabbitMQService: RabbitMQService) {}
+  constructor(private readonly rabbitMQService: RabbitmqService) {}
 
   async publishMessage(messageDto: MessageDto) {
     await this.rabbitMQService.publishMessage(messageDto);

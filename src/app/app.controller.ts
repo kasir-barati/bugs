@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AppService } from './app.service';
-import { MessageDto } from './dto/message.dto';
+import { MessageDto } from './dto';
 
 @ApiTags('Batch Processing')
 @Controller('api')

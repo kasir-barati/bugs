@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { RabbitMQModule as GolevelupRabbitMQModule } from '@golevelup/nestjs-rabbitmq';
-import { RabbitMQService } from './rabbitmq.service';
-import { RabbitMQConsumer } from './rabbitmq.consumer';
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
+import { RabbitmqService } from './rabbitmq.service';
+import { RabbitmqConsumer } from './rabbitmq.consumer';
 
 @Module({
   imports: [
-    GolevelupRabbitMQModule.forRoot({
+    RabbitMQModule.forRoot({
       exchanges: [
         {
           name: process.env.RABBITMQ_EXCHANGE || 'batch-exchange',
@@ -20,9 +20,10 @@ import { RabbitMQConsumer } from './rabbitmq.consumer';
         'amqp://guest:guest@rabbitmq:5672',
       connectionInitOptions: { wait: false, timeout: 30000 },
       enableControllerDiscovery: true,
+      prefetchCount: 10,
     }),
   ],
-  providers: [RabbitMQService, RabbitMQConsumer],
-  exports: [RabbitMQService],
+  providers: [RabbitmqService, RabbitmqConsumer],
+  exports: [RabbitmqService],
 })
-export class RabbitMQModule {}
+export class RabbitmqModule {}
