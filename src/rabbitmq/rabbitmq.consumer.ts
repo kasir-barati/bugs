@@ -18,10 +18,17 @@ export class RabbitMQConsumer {
     this.logger.log('=== Received Message ===');
     this.logger.log(JSON.stringify(message, null, 2));
     this.logger.log('========================');
-    
+
     // Process the message here
     // For now, we just log it
-    
+
+    await sleep(2);
+
     return; // Acknowledge the message
   }
+}
+
+function sleep(minutes: number) {
+  const milliseconds = minutes * 60 * 1000;
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }

@@ -1,7 +1,6 @@
 services:
   rabbitmq:
-    image: rabbitmq:3.12-management-alpine
-    container_name: rabbitmq
+    image: rabbitmq:3.13.4-management-alpine
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -18,7 +17,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: nestjs-app
     ports:
       - "3000:3000"
     environment:
