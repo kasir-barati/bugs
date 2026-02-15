@@ -1,0 +1,37 @@
+{
+  "name": "bugs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "nest build",
+    "format": "prettier . -w -u",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
+    "start:prod": "node dist/main.js",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.28.2",
+  "dependencies": {
+    "@golevelup/nestjs-rabbitmq": "^7.1.2",
+    "@nestjs/common": "^11.1.13",
+    "@nestjs/config": "^4.0.3",
+    "@nestjs/core": "^11.1.13",
+    "@nestjs/platform-express": "^11.1.13",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.16",
+    "@nestjs/schematics": "^11.0.9",
+    "@types/node": "^25.2.3",
+    "prettier": "^3.8.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
