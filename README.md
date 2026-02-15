@@ -158,3 +158,13 @@ export class DummyService {
 ```
 
 </td></tr></tbody></table>
+
+## How to Start
+
+1. `pnpm i --frozen-lockfile`.
+2. `cp .env.example .env`.
+3. `docker compose up -d`.
+
+```cmd
+docker compose logs -f app
+```
