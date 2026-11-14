@@ -1,5 +1,9 @@
 # `error resolving primitive type: unhandled Schema type: &[null]`
 
+> [!IMPORTANT]
+>
+> I had to switch to its latest version (`oapi-codegen@v2.8.2`). And then it was fixed!
+
 ```bash
 $ ./run-v2.sh
 WARNING: You are using an OpenAPI 3.1.x specification, which is not yet supported by oapi-codegen (https://github.com/oapi-codegen/oapi-codegen/issues/373) and so some functionality may not be available. Until oapi-codegen supports OpenAPI 3.1, it is recommended to downgrade your spec to 3.0.x
