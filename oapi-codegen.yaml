@@ -1,0 +1,5 @@
+package: fithara
+output: out.go
+generate:
+  models: true
+  client: true
